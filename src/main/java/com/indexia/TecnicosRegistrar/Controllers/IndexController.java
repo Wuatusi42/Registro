@@ -65,6 +65,7 @@ public class IndexController {
         if (tecnicoDTO == null) {
             model.addAttribute("mensajeError", "Técnico no encontrado.");
         } else {
+        	System.out.println("Fecha de Nacimiento en DTO (Controller): " + tecnicoDTO.getDateBhirthday());
             model.addAttribute("tecnicoDTO", tecnicoDTO);
         }
 

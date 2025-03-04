@@ -59,22 +59,6 @@ document.addEventListener("DOMContentLoaded", function() {
         showPopup(errorMessage);
     }
 });
-    document.getElementById('birthday').addEventListener('focus', function(e) {
-        var currentValue = e.target.value;
-        if (currentValue) {
-            var date = new Date(currentValue);
-            // Establece la hora, minutos y segundos a 00
-            date.setHours(0, 0, 0, 0);
-            e.target.value = date.toISOString().slice(0, 16); // Formato YYYY-MM-DDTHH:MM
-        }
-    });
-
-    document.getElementById('birthday').addEventListener('change', function(e) {
-        var date = new Date(e.target.value);
-        // Establece la hora, minutos y segundos a 00
-        date.setHours(0, 0, 0, 0);
-        e.target.value = date.toISOString().slice(0, 16); // Formato YYYY-MM-DDTHH:MM
-    });
     function mayus(e) {
         e.value = e.value.toUpperCase();
     }

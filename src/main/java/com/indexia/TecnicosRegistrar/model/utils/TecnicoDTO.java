@@ -13,8 +13,8 @@ public class TecnicoDTO {
 	private String apellidoPatern;
 	private String apellidoMatern;
 	private String correo;
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime dateBhirthday;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date dateBhirthday;
 	private String RFC;
 	private String CURP;
 	private Date dateRegister;
@@ -68,13 +68,6 @@ public class TecnicoDTO {
 		this.CURP = CURP;
 	}
 
-	public LocalDateTime getDateBhirthday() {
-		return dateBhirthday;
-	}
-
-	public void setDateBhirthday(LocalDateTime dateBhirthday) {
-		this.dateBhirthday = dateBhirthday;
-	}
 
 	public Date getDateRegister() {
 		return dateRegister;
@@ -99,4 +92,13 @@ public class TecnicoDTO {
 	public void setIdTecnicoDTO(Integer idTecnicoDTO) {
 		this.idTecnicoDTO = idTecnicoDTO;
 	}
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	public Date getDateBhirthday() {
+		return dateBhirthday;
+	}
+
+	public void setDateBhirthday(Date dateBhirthday) {
+		this.dateBhirthday = dateBhirthday;
+	}
+	
 }

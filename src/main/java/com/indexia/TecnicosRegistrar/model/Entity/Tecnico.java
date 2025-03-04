@@ -27,7 +27,8 @@ public class Tecnico {
     private String apellidoMaterno;
 
     @Column(name = "fechanacimiento")
-    private LocalDateTime fechaNacimiento;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
 
     @Column(name = "rfc")
     private String rfc;
@@ -114,14 +115,6 @@ public class Tecnico {
         this.activo = activo;
     }
 
-    public LocalDateTime getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDateTime fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
     public Date getFechaRegistro() {
         return fechaRegistro;
     }
@@ -137,4 +130,13 @@ public class Tecnico {
     public void setBancosTecnicos(Set<BancosTecnicos> bancosTecnicos) {
         this.bancosTecnicos = bancosTecnicos;
     }
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+    
 }

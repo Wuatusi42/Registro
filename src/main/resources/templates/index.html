@@ -58,6 +58,7 @@
 							    <option>COAHUILA</option>
 							    <option>COLIMA</option>
 							    <option>DURANGO</option>
+								<option>ESTADO DE MEXICO</option>
 							    <option>GUANAJUATO</option>
 							    <option>GUERRERO</option>
 							    <option>HIDALGO</option>
@@ -75,7 +76,7 @@
 							    <option>SONORA</option>
 							    <option>TABASCO</option>
 							    <option>TAMAULIPAS</option>
-							    <option>TlAXCALA</option>
+							    <option>TLAXCALA</option>
 							    <option>VERACRUZ</option>
 							    <option>YUCATÁN</option>
 							    <option>ZACATECAS</option>
@@ -83,7 +84,7 @@
 
                             <label for="birthday">Fecha de nacimiento</label>
                             <div class="input-group">
-                                <input th:field="*{dateBhirthday}" type="datetime-local" class="form-control" id="birthday">
+								<input th:field="*{dateBhirthday}" th:value="${#dates.format(tecnicoDTO.dateBhirthday, 'yyyy-MM-dd')}" type="date" class="form-control" id="birthday">
                             </div>
 
                             <!-- Campo oculto para el ID -->

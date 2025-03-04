@@ -15,6 +15,10 @@ import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -24,10 +28,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 @Service
 public class TecnicoServiceImpl implements TecnicoService {
+	Scanner sc = new Scanner(System.in);
 	@Autowired
 	private TecnicoDAO tecnicoDAO;
 	private TecnicoMapper tecnicoMapper;
@@ -37,7 +43,6 @@ public class TecnicoServiceImpl implements TecnicoService {
 	private BancosTecnicosDAO bancosTecnicosDAO;
 	@Autowired
 	private BancosDAO bancosDAO;
-
 	@Override
 	public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO) {
 	    RespuestaServicio respuestaServicio = new RespuestaServicio();
@@ -59,10 +64,10 @@ public class TecnicoServiceImpl implements TecnicoService {
 	            tecnico.setEmail(tecnicoDTO.getCorreo());
 	            tecnico.setRfc(tecnicoDTO.getRFC());
 	            tecnico.setCurp(tecnicoDTO.getCURP());
+	            tecnico.setFechaNacimiento(tecnicoDTO.getDateBhirthday());
 	            tecnicoDAO.save(tecnico);
 	            respuestaServicio.setMensajeRespuesta("Técnico actualizado correctamente.");
 	        } else {
-	            // Validaciones solo para nuevo registro
 	            respuestaServicio = validaciones(tecnicoDTO);
 	            if (respuestaServicio.getCodigoRespuesta().equals("500")) {
 	                return respuestaServicio;
@@ -70,6 +75,7 @@ public class TecnicoServiceImpl implements TecnicoService {
 	            
 	            // Registro de un nuevo técnico
 	            Tecnico tecEntity = TecnicoMapper.INSTANCE.tecnicoDTOtoTecnico(tecnicoDTO);
+	            tecEntity.setFechaNacimiento(tecnicoDTO.getDateBhirthday());
 	            tecEntity.setFechaRegistro(new Date());
 	            tecEntity.setActivo(true);
 	            tecnicoDAO.save(tecEntity);
@@ -98,115 +104,131 @@ public class TecnicoServiceImpl implements TecnicoService {
 
 	    } catch (Exception e) {
 	        respuestaServicio.setMensajeRespuesta("Error al procesar el técnico: " + e.getMessage());
+	        e.printStackTrace();
+	        System.out.println("Exeption catched");
 	    }
 
 	    return respuestaServicio;
 	}
-
-
 	@Override
 	public RespuestaServicio registerFormat(InputStream file) throws IOException {
 	    RespuestaServicio respuestaServicio = new RespuestaServicio();
 	    List<Tecnico> tecnicoList = new LinkedList<>();
-	    Workbook workbook = WorkbookFactory.create(file);
-	    Sheet sheet = workbook.getSheetAt(0);
 
-	    Row rowTitulo = sheet.getRow(sheet.getFirstRowNum());
-	    if (rowTitulo == null || rowTitulo.getCell(0) == null || rowTitulo.getCell(0).getStringCellValue().isEmpty()) {
-	        return new RespuestaServicio("500", "El archivo no contiene titulos validos en la primera fila");
-	    }
-	    
-	    String[] titulosEsperados = { "Nombre (s)", "Apellido Paterno", "Apellido Materno", "email",
-	            "TELEFONO", "CURP", "RFC", "ESTADO", "POBLACIÓN O ZONA QUE ATIENDE" };
-	    for (int j = 0; j < titulosEsperados.length; j++) {
-	        if (rowTitulo.getCell(j) == null || !rowTitulo.getCell(j).getStringCellValue().equalsIgnoreCase(titulosEsperados[j])) {
-	            return new RespuestaServicio("500", "Los titulos de la primera fila no estan en el orden esperado, revise su formato.");
+	    // Log de inicio de la operación
+	    log("Iniciando el proceso de registro de formato.");
+
+	    try {
+	        Workbook workbook = WorkbookFactory.create(file);
+	        Sheet sheet = workbook.getSheetAt(0);
+
+	        Row rowTitulo = sheet.getRow(sheet.getFirstRowNum());
+	        if (rowTitulo == null || rowTitulo.getCell(0) == null || rowTitulo.getCell(0).getStringCellValue().isEmpty()) {
+	            logError("El archivo no contiene títulos válidos en la primera fila.");
+	            return new RespuestaServicio("500", "El archivo no contiene titulos validos en la primera fila");
 	        }
-	    }
 
-	    Row rowDescripcion = sheet.getRow(1); // La segunda fila está en índice 1
-	    if (rowDescripcion == null || rowDescripcion.getCell(0) == null || rowDescripcion.getCell(0).getStringCellValue().isEmpty()) {
-	        return new RespuestaServicio("500", "La segunda fila debe contener descripciones validas, revise su formato");
-	    }
-	    boolean hayError = false;
-	    for (int i = 2; i <= sheet.getLastRowNum(); i++) {
-	        Row row = sheet.getRow(i);
-	        if (row != null) {
-	            String email = row.getCell(3).getStringCellValue().trim();
-
-	            if (existeEmail(email)) {
-	                return new RespuestaServicio("500", "El email '" + email + "' ya existe en la base de datos. No se inserto ningun registro.");
-	            }
-	            if (!isValidEmail(email)) {
-	                return new RespuestaServicio("500", "El email '" + email + "' tiene un formato inválido. No se inserto ningun registro.");
+	        String[] titulosEsperados = { "Nombre (s)", "Apellido Paterno", "Apellido Materno", "email",
+	                "TELEFONO", "CURP", "RFC", "ESTADO", "POBLACIÓN O ZONA QUE ATIENDE" };
+	        for (int j = 0; j < titulosEsperados.length; j++) {
+	            if (rowTitulo.getCell(j) == null || !rowTitulo.getCell(j).getStringCellValue().equalsIgnoreCase(titulosEsperados[j])) {
+	                logError("Los títulos de la primera fila no están en el orden esperado.");
+	                return new RespuestaServicio("500", "Los titulos de la primera fila no estan en el orden esperado, revise su formato.");
 	            }
 	        }
-	    }
-	    for (int i = 2; i <= sheet.getLastRowNum(); i++) {
-	        Row row = sheet.getRow(i);
-	        if (row != null) { // Verificar que la fila no esté vacía
-	        	
-	            Tecnico tecnico = new Tecnico();
-	            
-	            // Obtener valores de las celdas
-	            String nombre = getCellValue(row, 0);
-	            String apellidoPaterno = getCellValue(row, 1);
-	            String apellidoMaterno = getCellValue(row, 2);
-	            String email = getCellValue(row, 3).trim();
-	            String curp = getCellValue(row, 5);
-	            String rfc = getCellValue(row, 6);
-	            // Si todos los campos importantes están vacíos, no registrar el técnico
-	            if (nombre.isEmpty() && apellidoPaterno.isEmpty() && apellidoMaterno.isEmpty() && email.isEmpty() && curp.isEmpty() && rfc.isEmpty()) {
-	                continue; // No se agrega el técnico si todos los campos están vacíos
+
+	        Row rowDescripcion = sheet.getRow(1); // La segunda fila está en índice 1
+	        if (rowDescripcion == null || rowDescripcion.getCell(0) == null || rowDescripcion.getCell(0).getStringCellValue().isEmpty()) {
+	            logError("La segunda fila debe contener descripciones válidas.");
+	            return new RespuestaServicio("500", "La segunda fila debe contener descripciones validas, revise su formato");
+	        }
+
+	        boolean hayError = false;
+	        for (int i = 2; i <= sheet.getLastRowNum(); i++) {
+	            Row row = sheet.getRow(i);
+	            if (row != null) {
+	                String email = row.getCell(3).getStringCellValue().trim();
+
+	                if (existeEmail(email)) {
+	                    logError("El email '" + email + "' ya existe en la base de datos.");
+	                    return new RespuestaServicio("500", "El email '" + email + "' ya existe en la base de datos. No se inserto ningun registro.");
+	                }
+	                if (!isValidEmail(email)) {
+	                    logError("El email '" + email + "' tiene un formato inválido.");
+	                    return new RespuestaServicio("500", "El email '" + email + "' tiene un formato inválido. No se inserto ningun registro.");
+	                }
 	            }
-	            
-	            // Si no están vacíos, asignar los valores y agregar el técnico a la lista
-	            tecnico.setNombre(nombre);
-	            tecnico.setApellidoPaterno(apellidoPaterno);
-	            tecnico.setApellidoMaterno(apellidoMaterno);
-	            tecnico.setEmail(email);
-	            tecnico.setCurp(curp);
-	            tecnico.setRfc(rfc);
-	            
-	            tecnico.setActivo(true);
-	            tecnico.setFechaRegistro(new Date());
-	            
-	            tecnicoList.add(tecnico);
 	        }
-	    }
-	    
-	    // Guardar todos los técnicos de una vez
-	    if (!tecnicoList.isEmpty()) {
-	        tecnicoDAO.saveAll(tecnicoList);
-	    }
 
-	    // Procesar cada técnico
-	    for (Tecnico tecnico : tecnicoList) {
-	        CodigosActivacion codActEntity = new CodigosActivacion();
-	        codActEntity.setTecnico(tecnico);
-	        codActEntity.setCaducidad(LocalDateTime.now().plusYears(2));
-	        codActEntity.setCodigo("TPV123codigo");
-	        codActEntity.setUtilizado(false);
-	        codActEntity.setFechaRegistro(LocalDateTime.now());
-	        codActEntity.setCodigoResumido("TPV123");
-	        codigoActivacionDAO.save(codActEntity);
+	        for (int i = 2; i <= sheet.getLastRowNum(); i++) {
+	            Row row = sheet.getRow(i);
+	            if (row != null) { // Verificar que la fila no esté vacía
+	                Tecnico tecnico = new Tecnico();
 
-	        BancosTecnicos bancTecEntity = new BancosTecnicos();
-	        
-	        // Manejar Optional correctamente para evitar NPE
-	        Optional<Bancos> bancoEntity = bancosDAO.findByNombre("Banorte");
-	        if (bancoEntity.isPresent()) {
-	            bancTecEntity.setBancos(bancoEntity.get());
-	            bancTecEntity.setTecnico(tecnico);
-	            bancosTecnicosDAO.insertarBancosTecnicos(bancoEntity.get().getIdBanco(), tecnico.getIdTecnico());
-	        } else {
-	            // Manejo en caso de que no se encuentre el banco
-	            // Por ejemplo, puedes devolver un error o manejar el caso de otra manera
-	            return new RespuestaServicio("500", "Banco no encontrado.");
+	                // Obtener valores de las celdas
+	                String nombre = getCellValue(row, 0);
+	                String apellidoPaterno = getCellValue(row, 1);
+	                String apellidoMaterno = getCellValue(row, 2);
+	                String email = getCellValue(row, 3).trim();
+	                String curp = getCellValue(row, 5);
+	                String rfc = getCellValue(row, 6);
+
+	                // Si todos los campos importantes están vacíos, no registrar el técnico
+	                if (nombre.isEmpty() && apellidoPaterno.isEmpty() && apellidoMaterno.isEmpty() && email.isEmpty() && curp.isEmpty() && rfc.isEmpty()) {
+	                    continue; // No se agrega el técnico si todos los campos están vacíos
+	                }
+
+	                // Si no están vacíos, asignar los valores y agregar el técnico a la lista
+	                tecnico.setNombre(nombre);
+	                tecnico.setApellidoPaterno(apellidoPaterno);
+	                tecnico.setApellidoMaterno(apellidoMaterno);
+	                tecnico.setEmail(email);
+	                tecnico.setCurp(curp);
+	                tecnico.setRfc(rfc);
+
+	                tecnico.setActivo(true);
+	                tecnico.setFechaRegistro(new Date());
+
+	                tecnicoList.add(tecnico);
+	            }
 	        }
-	    }
 
-	    return new RespuestaServicio("200", "Formato registrado correctamente.");
+	        // Guardar todos los técnicos de una vez
+	        if (!tecnicoList.isEmpty()) {
+	            tecnicoDAO.saveAll(tecnicoList);
+	        }
+
+	        // Procesar cada técnico
+	        for (Tecnico tecnico : tecnicoList) {
+	            CodigosActivacion codActEntity = new CodigosActivacion();
+	            codActEntity.setTecnico(tecnico);
+	            codActEntity.setCaducidad(LocalDateTime.now().plusYears(2));
+	            codActEntity.setCodigo("TPV123codigo");
+	            codActEntity.setUtilizado(false);
+	            codActEntity.setFechaRegistro(LocalDateTime.now());
+	            codActEntity.setCodigoResumido("TPV123");
+	            codigoActivacionDAO.save(codActEntity);
+
+	            BancosTecnicos bancTecEntity = new BancosTecnicos();
+
+	            // Manejar Optional correctamente para evitar NPE
+	            Optional<Bancos> bancoEntity = bancosDAO.findByNombre("Banorte");
+	            if (bancoEntity.isPresent()) {
+	                bancTecEntity.setBancos(bancoEntity.get());
+	                bancTecEntity.setTecnico(tecnico);
+	                bancosTecnicosDAO.insertarBancosTecnicos(bancoEntity.get().getIdBanco(), tecnico.getIdTecnico());
+	            } else {
+	                logError("Banco no encontrado.");
+	                return new RespuestaServicio("500", "Banco no encontrado.");
+	            }
+	        }
+
+	        log("Formato registrado correctamente.");
+	        return new RespuestaServicio("200", "Formato registrado correctamente.");
+	    } catch (Exception e) {
+	        logError("Error al procesar el archivo de registro: " + e.getMessage());
+	        return new RespuestaServicio("500", "Hubo un error al procesar el archivo. Intente nuevamente.");
+	    }
 	}
 	private String getCellValue(Row row, int columnIndex) {
 	    if (row.getCell(columnIndex) != null && row.getCell(columnIndex).getCellType() == CellType.STRING) {
@@ -356,6 +378,7 @@ public class TecnicoServiceImpl implements TecnicoService {
         tecnicoDTO.setCorreo(tecnico.getEmail());
         tecnicoDTO.setRFC(tecnico.getRfc());
         tecnicoDTO.setCURP(tecnico.getCurp());
+        tecnicoDTO.setDateBhirthday(tecnico.getFechaNacimiento());
         tecnicoDTO.setDateRegister(tecnico.getFechaRegistro());
 
         return tecnicoDTO;
@@ -374,6 +397,24 @@ public class TecnicoServiceImpl implements TecnicoService {
 	        return tecnicoDAO.findByEmail(email);
 	    }
 	    return tecnicoDAO.findAll();
+	}
+	private void log(String message) {
+	    System.out.println("[INFO] " + message);
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("registro.log"), true))) {
+	        writer.write("[INFO] " + message + "\n");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	// Método para loguear errores
+	private void logError(String message) {
+	    System.err.println("[ERROR] " + message);
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("registro.log"), true))) {
+	        writer.write("[ERROR] " + message + "\n");
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 }

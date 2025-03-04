@@ -23,7 +23,6 @@ public interface TecnicoMapper {
 	@Mapping(source = "fechaNacimiento", target = "dateBhirthday")
 	@Mapping(source = "rfc", target = "RFC")
 	@Mapping(source = "curp", target = "CURP")
-	@Mapping(source = "fechaRegistro", target = "dateRegister")
 	@Mapping(source = "email", target = "correo")
 	TecnicoDTO tecnicoToTecnicoDTO(Tecnico tecnico);
 
@@ -33,7 +32,6 @@ public interface TecnicoMapper {
 	@Mapping(source = "dateBhirthday", target = "fechaNacimiento")
 	@Mapping(source = "RFC", target = "rfc")
 	@Mapping(source = "CURP", target = "curp")
-	@Mapping(source = "dateRegister", target = "fechaRegistro")
 	@Mapping(source = "correo", target = "email")
 	@Mapping(target = "activo", constant = "true")
 	Tecnico tecnicoDTOtoTecnico(TecnicoDTO tecnicoDTO);
