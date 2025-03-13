@@ -22,5 +22,6 @@ public interface TecnicoService {
     public TecnicoDTO obtenerTecnico(Integer id);
     public boolean existeEmailAct(String email, Integer idTecnico);
     public List<Tecnico> filtrarTecnicos(String nombre, String correo);
+    
 
 }

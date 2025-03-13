@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-		<link rel="stylesheet" th:href="@{/estilos/login.css}">
-    <title>Login Tecnicos</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+	<link rel="stylesheet" th:href="@{/estilos/login.css}">
+	<title>Login Tecnicos</title>
 </head>
+
 <body>
 	<div class="content">
-	    <!-- Nav pills -->
-	    <ul class="nav nav-pills" role="tablist">
-	      <li class="nav-item">
-	        <a class="nav-link active" data-bs-toggle="pill" href="#login">Login</a>
-	      </li>
-	    </ul>
+		<!-- Nav pills -->
+		<ul class="nav nav-pills" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" data-bs-toggle="pill" href="#login">Login</a>
+			</li>
+		</ul>
 
-	    <!-- Tab panes -->
-	    <div class="tab-content">
-	      <div id="login" class="container tab-pane active">
-	        <form th:action="@{/login}" method="post">
-	          <div class="form-group">
-	            <label for="exampleFormControlInput1">Nombre De Usuario</label>
-	            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="nombre" name="nombreUsuario" th:value="${nombreUsuario}">
-	            <small id="emailHelp" class="form-text text-muted">El nombre debe de ser valido</small>
-	          </div>
-	          <div class="form-group">
-	            <label for="exampleInputPassword1">Password</label>
-	            <input type="password" class="form-control" id="exampleInputPassword1" name="credencial" placeholder="Password">
-	            <small id="emailHelp" class="form-text text-muted">La contraseña debe ser valida.</small>
-	          </div>
-	          <button type="submit" class="btn btn-primary">Ingresar</button>
-			  <br>
-			  <div th:if="${error}" class="alert alert-danger mt-3 fade show" id="errorAlert">
-			      <span th:text="${error}"></span>
-			  </div>
-	        </form>
-	      </div>
-	    </div>
-	  </div>
-	  <script th:src="@{/js/login.js}"></script>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div id="login" class="container tab-pane active">
+				<form th:action="@{/login}" method="post">
+					<div class="form-group">
+						<label for="exampleFormControlInput1">Nombre De Usuario</label>
+						<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="nombre"
+							name="nombreUsuario" th:value="${nombreUsuario}">
+						<small id="emailHelp" class="form-text text-muted">El nombre debe de ser valido</small>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Password</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" name="credencial"
+							placeholder="Password">
+						<small id="emailHelp" class="form-text text-muted">La contraseña debe ser valida.</small>
+					</div>
+					<button type="submit" class="btn btn-primary">Ingresar</button>
+					<br>
+					<div th:if="${error}" class="alert alert-danger mt-3 fade show" id="errorAlert">
+						<span th:text="${error}"></span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/login.js}"></script>
 </body>
+
 </html>

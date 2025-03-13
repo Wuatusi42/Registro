@@ -1,8 +1,6 @@
 package com.indexia.TecnicosRegistrar.model.Entity;
 
 import javax.persistence.*;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -46,7 +44,16 @@ public class Tecnico {
 
     @Column(name = "activo")
     private Boolean activo;
-
+    
+    @Column(name = "telefono")
+    private String telefono;
+    
+    @Column(name = "estado")
+    private String estado;
+    
+    @Column(name = "zona")
+    private String zona;
+    
     @OneToMany(mappedBy = "tecnico", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BancosTecnicos> bancosTecnicos;
     // Getters and Setters
@@ -138,5 +145,30 @@ public class Tecnico {
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getZona() {
+		return zona;
+	}
+
+	public void setZona(String zona) {
+		this.zona = zona;
+	}
+	
     
 }

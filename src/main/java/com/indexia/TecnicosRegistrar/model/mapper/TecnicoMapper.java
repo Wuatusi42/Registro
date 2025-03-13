@@ -24,6 +24,10 @@ public interface TecnicoMapper {
 	@Mapping(source = "rfc", target = "RFC")
 	@Mapping(source = "curp", target = "CURP")
 	@Mapping(source = "email", target = "correo")
+	@Mapping(source = "telefono", target = "phone")
+	@Mapping(source = "estado", target = "state")
+	@Mapping(source = "zona", target = "zone")
+	@Mapping(source = "activo", target = "status")
 	TecnicoDTO tecnicoToTecnicoDTO(Tecnico tecnico);
 
 	@Mapping(source = "name", target = "nombre")
@@ -33,6 +37,9 @@ public interface TecnicoMapper {
 	@Mapping(source = "RFC", target = "rfc")
 	@Mapping(source = "CURP", target = "curp")
 	@Mapping(source = "correo", target = "email")
-	@Mapping(target = "activo", constant = "true")
+	@Mapping(source = "status", target = "activo")
+	@Mapping(source = "phone", target = "telefono")
+	@Mapping(source = "state", target = "estado")
+	@Mapping(source = "zone", target = "zona")
 	Tecnico tecnicoDTOtoTecnico(TecnicoDTO tecnicoDTO);
 }

@@ -1,8 +1,6 @@
 package com.indexia.TecnicosRegistrar.model.utils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +17,9 @@ public class TecnicoDTO {
 	private String CURP;
 	private Date dateRegister;
 	private Boolean status;
+	private String phone;
+	private String state;
+	private String zone;
 
 	public String getCorreo() {
 		return correo;
@@ -99,6 +100,30 @@ public class TecnicoDTO {
 
 	public void setDateBhirthday(Date dateBhirthday) {
 		this.dateBhirthday = dateBhirthday;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getZone() {
+		return zone;
+	}
+
+	public void setZone(String zone) {
+		this.zone = zone;
 	}
 	
 }
