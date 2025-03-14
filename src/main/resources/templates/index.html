@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<a th:href="@{/}" class="btn btn-danger position-absolute top-0 end-0 m-3">
+	<a th:href="@{/}"  class="btn btn-dark position-absolute top-0 end-0 m-3">
 		<i class="bi bi-box-arrow-right"></i> Cerrar sesión
 	</a>
 	<div class="content">
@@ -105,7 +105,7 @@
 							<div class="input-group">
 								<input th:field="*{dateBhirthday}"
 									th:value="${#dates.format(tecnicoDTO.dateBhirthday, 'yyyy-MM-dd')}" type="date"
-									class="form-control" id="birthday">
+								 id="birthday">
 							</div>
 
 							<!-- Campo oculto para el ID -->
@@ -148,9 +148,6 @@
 						    <button type="button" class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filtroModal" data-bs-backdrop="false" id="botonFiltrar">
 						        <i class="bi bi-funnel"></i> Filtrar
 						    </button>
-						    <a th:href="@{/index}" class="btn btn-primary">
-						        <i class="bi bi-floppy-fill"></i> Registrar
-						    </a>
 						</div>  
 
 						<div id="tablaTécnicos" class="mt-4">
@@ -173,7 +170,7 @@
 										<td th:text="${tecnico.email}"></td>
 										<td>
 											<a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}"
-												class="btn btn-success">
+												class="btn btn-primary">
 												<i class="bi bi-pencil-fill"></i>
 											</a>
 										</td>

@@ -42,6 +42,15 @@ body{
 .tab-content button{
   border-radius: 15px;
   width: 100px;
-  margin: 0 auto;
+  margin: 10px auto;
   float: right;
+}
+.imagen-formulario{
+	width: 80px; /* Tamaño pequeño */
+	  height: auto;
+	  position: absolute;
+	  bottom: 10px;
+}
+.mt-3{
+	margin-top: 2rem !important;
 }
