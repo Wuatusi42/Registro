@@ -1,9 +1,9 @@
 package com.indexia.TecnicosRegistrar.Controllers;
 
+import com.indexia.TecnicosRegistrar.Service.CodigoService;
 import com.indexia.TecnicosRegistrar.Service.TecnicoService;
-import com.indexia.TecnicosRegistrar.Service.impl.TecnicoServiceImpl;
-import com.indexia.TecnicosRegistrar.model.Entity.Bancos;
 import com.indexia.TecnicosRegistrar.model.Entity.Tecnico;
+import com.indexia.TecnicosRegistrar.model.utils.DetalleDeInfoDTO;
 import com.indexia.TecnicosRegistrar.model.utils.RespuestaServicio;
 import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,14 @@ public class IndexController {
 	@Autowired
 	private TecnicoService tecnicoService;
 	@Autowired
-	private TecnicoServiceImpl tecnicoServiveImpl;
+	private CodigoService codigoActivacionService;
 
 	@GetMapping("/index")
 	public String mostrarForm(Model model) {
 		List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
 		model.addAttribute("tecnicoDTO", new TecnicoDTO());
 		model.addAttribute("tecnicos", tecnicos);
+		model.addAttribute("infoDetail", null);
 		return "index";
 	}
 
@@ -94,4 +95,23 @@ public class IndexController {
 
 		return "index"; // Nombre de la vista donde se mostrarán los resultados
 	}
+
+	@GetMapping("/getDetailInfo")
+	public String getDetailInfo(@RequestParam Integer idtecnico, Model model) {
+	    System.out.println("idTecnico: " + idtecnico);
+	    // Obtener la información del técnico
+	    DetalleDeInfoDTO infoDetail = codigoActivacionService.detalleDeInfo(idtecnico);
+	    // Si no hay detalles, mostrar un mensaje o manejarlo de acuerdo a tus necesidades
+	    if (infoDetail == null) {
+	        model.addAttribute("mensaje", "No se encontraron detalles para este técnico.");
+	    } else {
+	        model.addAttribute("infoDetail", infoDetail); // Solo usar el primer detalle si corresponde
+	    }
+	    
+	    System.out.println("Response Service: " + infoDetail);
+	    
+	    // Devolver la vista, por ejemplo 'index'
+	    return "index";
+	}
+
 }

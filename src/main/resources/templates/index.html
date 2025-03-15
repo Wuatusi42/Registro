@@ -175,7 +175,17 @@
 											</a>
 										</td>
 										<td>
-											<i class="bi bi-eye-fill"></i>
+											<!--<form>
+											<button
+											th:href="@{/getDetailInfo(idtecnico=${tecnico.idTecnico})}"
+											   class="btn btn-primary"
+											   data-bs-toggle="modal" 
+											   data-bs-target="#DetallesModal"
+											   id="DetallesModalButton">
+											   <i class="bi bi-eye-fill"></i>
+											</button>
+											</form>-->
+											<a th:href="@{/getDetailInfo(idtecnico=${tecnico.idTecnico})}" class="boton">Ver Detalle de <span th:text="${tecnico.nombre}"></span></a>
 										</td>
 									</tr>
 								</tbody>
@@ -192,7 +202,7 @@
 										aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
-									<form method="get" th:action="@{/filtrar-tecnico}">
+									<form method="get" th:action="@{/filtrar-tecnico}" >
 										<div class="mb-3">
 											<label for="nombre" class="form-label">Nombre</label>
 											<input type="text" class="form-control" id="nombre" name="nombre">
@@ -206,6 +216,54 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="modal fade" id="DetallesModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <h5 class="modal-title" id="filtroModalLabel">Detalles del Técnico</h5>
+					                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					            </div>
+					            <div class="modal-body">
+					                <form method="get">
+					                    <div class="mb-3">
+					                        <label for="nombre" class="form-label">Nombre Del Banco</label>
+					                        <input type="text" class="form-control" id="nombre" name="nombre">
+					                    </div>
+					                </form>
+									<form method="get">	
+											<div class="mb-3">
+											<label for="nombre" class="form-label">Codigo De Activacion</label>
+											<input type="text" class="form-control" id="codigo" name="codigo">
+											<label for="nombre" class="form-label">Codigo Resumido</label>
+											<input type="text" class="form-control" id="codigoR" name="codigoR">
+										 </div>
+									</form>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+					<!-- Modal -->
+					<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true"
+					     th:if="${infoDetail != null}">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="detailModalLabel">Detalles del Técnico</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <p><strong>Nombre del Banco:</strong> <span th:text="${infoDetail.nombreBanco}"></span></p>
+					        <p><strong>Código de Activación:</strong> <span th:text="${infoDetail.codigoActivacion}"></span></p>
+					        <p><strong>Código Resumido:</strong> <span th:text="${infoDetail.codigoResumido}"></span></p>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					      </div>
+					    </div>
+					  </div>
 					</div>
 				</div>
 			</div>
@@ -223,6 +281,14 @@
 		</div>
 	</div>
 	<script th:src="@{/js/script.js}"></script>
+	<script>
+	    // Abre el modal automáticamente si infoDetail está presente en el modelo
+	    $(document).ready(function () {
+	        if ($('[th\\:if="${infoDetail != null}"]').length) {
+	            $('#detailModal').modal('show');
+	        }
+	    });
+	</script>
 </body>
 
 </html>

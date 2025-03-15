@@ -90,6 +90,19 @@ document.addEventListener("DOMContentLoaded", function() {
         popupMessage.textContent = message; // Establecer el mensaje en el popup
         popup.style.display = "block"; // Mostrar el popup
     }
- 
+	document.addEventListener("DOMContentLoaded", function () {
+	    var detallesModal = new bootstrap.Modal(document.getElementById('DetallesModal'));
+	    
+	    // Abrir el modal cuando se haga clic en el botón de detalles
+	    var openDetallesModalButton = document.querySelectorAll('[data-bs-target="#DetallesModal"]');
+	    
+	    openDetallesModalButton.forEach(function(button) {
+	        button.addEventListener('click', function() {
+	            detallesModal.show(); // Abre el modal
+	        });
+	    });
+
+	    // Puedes añadir lógica adicional si necesitas cerrar el modal o manipularlo de alguna otra manera
+	});
 
 
