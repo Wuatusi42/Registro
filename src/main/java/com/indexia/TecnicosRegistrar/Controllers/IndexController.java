@@ -15,103 +15,144 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class IndexController {
-	@Autowired
-	private TecnicoService tecnicoService;
-	@Autowired
-	private CodigoService codigoActivacionService;
 
-	@GetMapping("/index")
-	public String mostrarForm(Model model) {
-		List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
-		model.addAttribute("tecnicoDTO", new TecnicoDTO());
-		model.addAttribute("tecnicos", tecnicos);
-		model.addAttribute("infoDetail", null);
-		return "index";
-	}
+    @Autowired
+    private TecnicoService tecnicoService;
 
-	@PostMapping("/registrarForm")
-	public String registrarTecnico(@ModelAttribute("tecnicoDTO") TecnicoDTO tecnicoDTO, Model model) {
-		RespuestaServicio respuestaServicio = new RespuestaServicio();
-		List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
-		model.addAttribute("tecnicos", tecnicos);
+    @Autowired
+    private CodigoService codigoActivacionService;
 
-		try {
-			if (tecnicoDTO.getIdTecnicoDTO() != null) {
-				// Actualización
-				respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
-				model.addAttribute("mensajeExito", "Técnico actualizado con éxito.");
-			} else {
-				// Registro
-				respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
-				model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
-			}
-		} catch (Exception e) {
-			model.addAttribute("mensajeError", "Error al registrar el técnico: " + e.getMessage());
-		}
-		return "index";
-	}
+    @GetMapping("/index")
+    public String mostrarForm(Model model, HttpSession session) {
+        List<Tecnico> tecnicos = (List<Tecnico>) session.getAttribute("tecnicos");
 
-	@PostMapping("/register-format")
-	public String saveAll(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-		try {
-			RespuestaServicio respuestaServicio = tecnicoService.registerFormat(file.getInputStream());
-			return "redirect:/index?mensaje=" + respuestaServicio.getMensajeRespuesta();
-		} catch (Exception e) {
-			e.printStackTrace(); // Agrega un log para ver el error
-			return "redirect:/index?mensaje=Hubo un error al registrar el archivo.";
-		}
-	}
+        if (tecnicos == null) { // Si la lista no está en sesión, cargarla desde la BD
+            tecnicos = tecnicoService.obtenerTodosLosTecnicos();
+            session.setAttribute("tecnicos", tecnicos);
+        }
 
-	@GetMapping("/editar-tecnico")
-	public String editarTecnico(@RequestParam("id") Integer id, Model model) {
-		TecnicoDTO tecnicoDTO = tecnicoService.obtenerTecnico(id);
+        model.addAttribute("tecnicoDTO", new TecnicoDTO());
+        model.addAttribute("infoDetail", new DetalleDeInfoDTO());
+        model.addAttribute("tecnicos", tecnicos);
 
-		if (tecnicoDTO == null) {
-			model.addAttribute("mensajeError", "Técnico no encontrado.");
-		} else {
-			System.out.println("Fecha de Nacimiento en DTO (Controller): " + tecnicoDTO.getDateBhirthday());
-			model.addAttribute("tecnicoDTO", tecnicoDTO);
-		}
+        return "index";
+    }
 
-		List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
-		model.addAttribute("tecnicos", tecnicos);
+    @PostMapping("/registrarForm")
+    public String registrarTecnico(@ModelAttribute("tecnicoDTO") TecnicoDTO tecnicoDTO, Model model, HttpSession session) {
+        RespuestaServicio respuestaServicio;
 
-		return "index";
-	}
+        try {
+            if (tecnicoDTO.getIdTecnicoDTO() != null) {
+                // Actualización
+                respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
+                model.addAttribute("mensajeExito", "Técnico actualizado con éxito.");
+            } else {
+                // Registro
+                respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
+                model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
+            }
 
-	@GetMapping("/filtrar-tecnico")
-	public String filtrarTecnicos(@RequestParam(required = false) String nombre,
-			@RequestParam(required = false) String email, Model model) {
-		// Llamada al servicio para filtrar los técnicos
-		List<Tecnico> tecnicos = tecnicoService.filtrarTecnicos(nombre, email);
+            // Actualizar la lista en la sesión después de registrar un técnico
+            List<Tecnico> tecnicosActualizados = tecnicoService.obtenerTodosLosTecnicos();
+            session.setAttribute("tecnicos", tecnicosActualizados);
+            model.addAttribute("tecnicos", tecnicosActualizados);
 
-		// Se pasa la lista de técnicos filtrados a la vista
-		model.addAttribute("tecnicos", tecnicos);
+        } catch (Exception e) {
+            model.addAttribute("mensajeError", "Error al registrar el técnico: " + e.getMessage());
+        }
 
-		// Aquí podrías pasar un nuevo objeto tecnicoDTO si es necesario
-		model.addAttribute("tecnicoDTO", new TecnicoDTO());
+        return "index";
+    }
 
-		return "index"; // Nombre de la vista donde se mostrarán los resultados
-	}
+    @PostMapping("/register-format")
+    public String saveAll(@RequestParam("file") MultipartFile file, Model model, HttpSession session) throws IOException {
+        try {
+            RespuestaServicio respuestaServicio = tecnicoService.registerFormat(file.getInputStream());
 
-	@GetMapping("/getDetailInfo")
-	public String getDetailInfo(@RequestParam Integer idtecnico, Model model) {
-	    System.out.println("idTecnico: " + idtecnico);
-	    // Obtener la información del técnico
-	    DetalleDeInfoDTO infoDetail = codigoActivacionService.detalleDeInfo(idtecnico);
-	    // Si no hay detalles, mostrar un mensaje o manejarlo de acuerdo a tus necesidades
-	    if (infoDetail == null) {
-	        model.addAttribute("mensaje", "No se encontraron detalles para este técnico.");
-	    } else {
-	        model.addAttribute("infoDetail", infoDetail); // Solo usar el primer detalle si corresponde
-	    }
-	    
-	    System.out.println("Response Service: " + infoDetail);
-	    
-	    // Devolver la vista, por ejemplo 'index'
-	    return "index";
-	}
+            // Actualizar la lista en la sesión después de importar técnicos
+            List<Tecnico> tecnicosActualizados = tecnicoService.obtenerTodosLosTecnicos();
+            session.setAttribute("tecnicos", tecnicosActualizados);
 
+            return "redirect:/index?mensaje=" + respuestaServicio.getMensajeRespuesta();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/index?mensaje=Hubo un error al registrar el archivo.";
+        }
+    }
+
+    @GetMapping("/editar-tecnico")
+    public String editarTecnico(@RequestParam("id") Integer id, Model model, HttpSession session) {
+        TecnicoDTO tecnicoDTO = tecnicoService.obtenerTecnico(id);
+
+        if (tecnicoDTO == null) {
+            model.addAttribute("mensajeError", "Técnico no encontrado.");
+        } else {
+            System.out.println("Fecha de Nacimiento en DTO (Controller): " + tecnicoDTO.getDateBhirthday());
+            model.addAttribute("tecnicoDTO", tecnicoDTO);
+        }
+
+        List<Tecnico> tecnicos = (List<Tecnico>) session.getAttribute("tecnicos");
+        if (tecnicos == null) {
+            tecnicos = tecnicoService.obtenerTodosLosTecnicos();
+            session.setAttribute("tecnicos", tecnicos);
+        }
+
+        model.addAttribute("tecnicos", tecnicos);
+        return "index";
+    }
+
+    @GetMapping("/filtrar-tecnico")
+    public String filtrarTecnicos(@RequestParam(required = false) String nombre,
+                                  @RequestParam(required = false) String email,
+                                  Model model, HttpSession session) {
+        List<Tecnico> tecnicos = tecnicoService.filtrarTecnicos(nombre, email);
+
+        model.addAttribute("tecnicos", tecnicos);
+        model.addAttribute("tecnicoDTO", new TecnicoDTO());
+
+        // Opcional: actualizar la lista en la sesión con los técnicos filtrados
+        session.setAttribute("tecnicos", tecnicos);
+
+        return "index";
+    }
+
+    @GetMapping("/getDetailInfo")
+    @ResponseBody
+    public DetalleDeInfoDTO getDetailInfo(@RequestParam Integer idtecnico, Model model, HttpSession session) {
+        System.out.println("idTecnico: " + idtecnico);
+
+        DetalleDeInfoDTO infoDetail = codigoActivacionService.detalleDeInfo(idtecnico);
+        if (infoDetail == null) {
+            model.addAttribute("mensaje", "No se encontraron detalles para este técnico.");
+            System.out.println("infoDetail: " + "No se encontraron detalles para este técnico.");
+
+        } else {
+            model.addAttribute("infoDetail", infoDetail);
+            System.out.println("infoDetail: " + infoDetail.toString());
+        }
+
+        // Mantener la lista de técnicos en la sesión
+        List<Tecnico> tecnicos = (List<Tecnico>) session.getAttribute("tecnicos");
+        if (tecnicos == null) {
+            tecnicos = tecnicoService.obtenerTodosLosTecnicos();
+            session.setAttribute("tecnicos", tecnicos);
+            System.out.println("recargando tecnicos via service...: ");
+        }
+        model.addAttribute("tecnicoDTO", new TecnicoDTO());
+        model.addAttribute("tecnicos", tecnicos);
+
+        return infoDetail;
+    }
+    
+
+    @GetMapping("/limpiar-sesion")
+    public String limpiarSesion(HttpSession session) {
+        session.removeAttribute("tecnicos"); // Borra solo la lista de técnicos
+        return "redirect:/index";
+    }
 }

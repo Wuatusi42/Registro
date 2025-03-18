@@ -28,5 +28,8 @@ public class DetalleDeInfoDTO {
 		this.codigoActivacion = codigoActivacion;
 		this.codigoResumido = codigoResumido;
 	}
+	public DetalleDeInfoDTO() {
+		// TODO Auto-generated constructor stub
+	}
 	
 }

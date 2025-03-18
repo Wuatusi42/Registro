@@ -8,13 +8,21 @@ import com.indexia.TecnicosRegistrar.model.utils.DetalleDeInfoDTO;
 
 @Service
 public class CodigosServiceImpl implements CodigoService {
-	
-	 @Autowired
-	 private CodigoActivacionDAO codigoActivacionRepository;
-	 
-	@Override
+
+	@Autowired
+	private CodigoActivacionDAO codigoActivacionRepository;
+
 	public DetalleDeInfoDTO detalleDeInfo(Integer idtecnico) {
-		return codigoActivacionRepository.detalleDeInfo(idtecnico);
+		Object[] tmpArr = codigoActivacionRepository.detalleDeInfo(idtecnico).get();
+		
+		if(tmpArr.length == 0) {
+			return new DetalleDeInfoDTO();
+		}else {
+			Object[] dataTmp = (Object[]) tmpArr[0];
+			return new DetalleDeInfoDTO((String) dataTmp[0], // nombre
+					(String) dataTmp[1], // codigo
+					(String) dataTmp[2] // codigoResumido
+			);
+		}
 	}
-	
 }
