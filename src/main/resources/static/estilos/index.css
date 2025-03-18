@@ -162,6 +162,9 @@ form .btn {
 .modal-backdrop {
     display: none !important;
 }
+.modal-content{
+	width: 100% !important;
+}
 input[type="date"] {
   display: block;
   width: 80%;
