@@ -50,7 +50,7 @@ public class IndexController {
             if (tecnicoDTO.getIdTecnicoDTO() != null) {
                 // Actualización
                 respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
-                model.addAttribute("mensajeExito", "Técnico actualizado con éxito.");
+                model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
             } else {
                 // Registro
                 respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);

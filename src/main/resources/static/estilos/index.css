@@ -148,7 +148,6 @@ form button[type="submit"] {
     width: auto; /* Asegura que el ancho sea el adecuado para los botones del formulario */
     max-width: unset; /* Elimina cualquier restricción de tamaño */
     padding: 10px 20px; /* Asegura que el tamaño del botón sea el adecuado */
-    margin: 25px 45px; /* Añade margen para separar el botón de otros elementos */
 }
 
 /* Opcional: si tienes botones adicionales dentro de los formularios, también puedes aplicarles un estilo similar */
