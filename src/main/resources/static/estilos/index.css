@@ -188,4 +188,6 @@ input[type="date"]:disabled {
   background-color: #e9ecef;
   opacity: 1;
 }
-
+#searchInput {
+   width: 100%;
+   }

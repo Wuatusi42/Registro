@@ -151,7 +151,7 @@
 							<button id="cerrarPopupRegistro">Cerrar</button>
 						</div>
 					</div>
-					<div class="col-md-8">
+					<!--<div class="col-md-8">
 						<h3>Técnicos Registrados</h3>
 						<div
 							class="d-flex justify-content-end gap-2 position-absolute top-0 end-0 m-3">
@@ -159,7 +159,7 @@
 								class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center"
 								data-bs-toggle="modal" data-bs-target="#filtroModal"
 								data-bs-backdrop="false" id="botonFiltrar">
-								<i class="bi bi-funnel"></i> Filtrar
+								<i class="bi bi-funnel"></i> Filtrars
 							</button>
 						</div>
 						<div id="tablaTécnicos">
@@ -195,6 +195,50 @@
 								</tbody>
 							</table>
 						</div>
+					</div>-->
+					<div class="col-md-8">
+					    <h3>Técnicos Registrados</h3>
+
+					    <!-- Campo de búsqueda -->
+					    <div class="d-flex mb-7">
+					        <input type="text" id="searchInput" class="form-control" placeholder="Buscar Técnicos">
+					    </div>
+						<br>
+					    <!-- Tabla de Técnicos -->
+					    <div id="tablaTécnicos">
+					        <table class="table table-bordered">
+					            <thead>
+					                <tr>
+					                    <th>Nombre</th>
+					                    <th>Apellido Paterno</th>
+					                    <th>Apellido Materno</th>
+					                    <th>Correo Electrónico</th>
+					                    <th>Editar</th>
+					                    <th>Mas</th>
+					                </tr>
+					            </thead>
+					            <tbody id="tableBody">
+					                <tr th:each="tecnico : ${tecnicos}">
+					                    <td th:text="${tecnico.nombre}"></td>
+					                    <td th:text="${tecnico.apellidoPaterno}"></td>
+					                    <td th:text="${tecnico.apellidoMaterno}"></td>
+					                    <td th:text="${tecnico.email}"></td>
+					                    <td>
+					                        <a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}" class="btn btn-primary">
+					                            <i class="bi bi-pencil-fill"></i>
+					                        </a>
+					                    </td>
+					                    <td>
+					                        <a th:href="@{/getDetailInfo(idtecnico=${tecnico.idTecnico})}"
+					                            th:attr="data-nombreBanco=${infoDetail?.nombreBanco}, data-codigoActivacion=${infoDetail?.codigoActivacion}, data-codigoResumido=${infoDetail?.codigoResumido}"
+					                            class="boton" onclick="mostrarModal(this); return false;">
+					                            Ver Detalles
+					                        </a>
+					                    </td>
+					                </tr>
+					            </tbody>
+					        </table>
+					    </div>
 					</div>
 					<div class="modal fade" id="filtroModal" tabindex="-1"
 						aria-labelledby="filtroModalLabel" aria-hidden="true">
@@ -220,6 +264,11 @@
 										</div>
 										<button type="submit" class="btn btn-primary">Aplicar
 											Filtro</button>
+											<!-- Botón de reiniciar filtros -->
+											<button type="button" class="btn btn-secondary" id="reiniciarFiltros">
+											    <i class="bi bi-arrow-repeat"></i> Reiniciar Filtros
+											</button>
+
 									</form>
 								</div>
 							</div>
@@ -322,7 +371,34 @@ function mostrarModal(element) {
 function cerrarModal() {
         document.getElementById('detalleModal').style.display = 'none';
     }
+	document.getElementById('reiniciarFiltros').addEventListener('click', function() {
+	      // Limpia los campos de texto
+	      document.getElementById('nombre').value = '';
+	      document.getElementById('email').value = '';
+	      
+	      // Si tienes otros filtros select, también los puedes limpiar
+	      document.getElementById('estado').value = '';
+	      document.getElementById('status').value = '';
+	  });
+	  document.getElementById("searchInput").addEventListener("input", function() {
+	      const searchValue = this.value.toLowerCase();
+	      const rows = document.querySelectorAll("#tableBody tr");
 
+	      rows.forEach(row => {
+	          const columns = row.querySelectorAll("td");
+	          const nombre = columns[0].textContent.toLowerCase();
+	          const apellidoPaterno = columns[1].textContent.toLowerCase();
+	          const apellidoMaterno = columns[2].textContent.toLowerCase();
+	          const email = columns[3].textContent.toLowerCase();
+
+	          // Comprobar si alguno de los valores coincide con la búsqueda
+	          if (nombre.includes(searchValue) || apellidoPaterno.includes(searchValue) || apellidoMaterno.includes(searchValue) || email.includes(searchValue)) {
+	              row.style.display = "";
+	          } else {
+	              row.style.display = "none";
+	          }
+	      });
+	  });
 </script>
 
 </body>

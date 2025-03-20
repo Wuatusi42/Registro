@@ -131,7 +131,7 @@ public class TecnicoServiceImpl implements TecnicoService {
 			if (rowTitulo == null || rowTitulo.getCell(0) == null
 					|| rowTitulo.getCell(0).getStringCellValue().isEmpty()) {
 				logError("El archivo no contiene títulos válidos en la primera fila.");
-				return new RespuestaServicio("500", "El archivo no contiene títulos válidos en la primera fila");
+				return new RespuestaServicio("500", "El archivo no contiene títulos validos en la primera fila");
 			}
 
 			String[] titulosEsperados = { "Nombre (s)", "Apellido Paterno", "Apellido Materno", "email", "TELEFONO",
@@ -139,9 +139,9 @@ public class TecnicoServiceImpl implements TecnicoService {
 			for (int j = 0; j < titulosEsperados.length; j++) {
 				if (rowTitulo.getCell(j) == null
 						|| !rowTitulo.getCell(j).getStringCellValue().equalsIgnoreCase(titulosEsperados[j])) {
-					logError("Los títulos de la primera fila no están en el orden esperado.");
+					logError("Los titulos de la primera fila no están en el orden esperado.");
 					return new RespuestaServicio("500",
-							"Los títulos de la primera fila no están en el orden esperado, revise su formato.");
+							"Los titulos de la primera fila no estan en el orden esperado, revise su formato.");
 				}
 			}
 
@@ -150,7 +150,7 @@ public class TecnicoServiceImpl implements TecnicoService {
 					|| rowDescripcion.getCell(0).getStringCellValue().isEmpty()) {
 				logError("La segunda fila debe contener descripciones válidas.");
 				return new RespuestaServicio("500",
-						"La segunda fila debe contener descripciones válidas, revise su formato");
+						"La segunda fila debe contener descripciones validas, revise su formato");
 			}
 
 			for (int i = 2; i <= sheet.getLastRowNum(); i++) {
@@ -161,12 +161,12 @@ public class TecnicoServiceImpl implements TecnicoService {
 					if (existeEmail(email)) {
 						logError("El email '" + email + "' ya existe en la base de datos.");
 						return new RespuestaServicio("500", "El email '" + email
-								+ "' ya existe en la base de datos. No se insertó ningún registro.");
+								+ "' ya existe en la base de datos. No se inserto ningun registro.");
 					}
 					if (!isValidEmail(email)) {
 						logError("El email '" + email + "' tiene un formato inválido.");
 						return new RespuestaServicio("500",
-								"El email '" + email + "' tiene un formato inválido. No se insertó ningún registro.");
+								"El email '" + email + "' tiene un formato invalido. No se inserto ningun registro.");
 					}
 				}
 			}
@@ -284,11 +284,11 @@ public class TecnicoServiceImpl implements TecnicoService {
 			return respuestaServicio;
 		}
 		if (!isValidRFC(tecnicoDTO.getRFC())) {
-			respuestaServicio.setMensajeRespuesta("El RFC en MAYÚSCULAS y revisar que tengan 13 dígitos");
+			respuestaServicio.setMensajeRespuesta("El RFC en MAYUSCULAS y revisar que tengan 13 digitos");
 			return respuestaServicio;
 		}
 		if (!isValidCURP(tecnicoDTO.getCURP())) {
-			respuestaServicio.setMensajeRespuesta("El CURP en MAYÚSCULAS y revisar que tenga 18 dígitos");
+			respuestaServicio.setMensajeRespuesta("El CURP en MAYUSCULAS y revisar que tenga 18 digitos");
 		}
 		return new RespuestaServicio("200", "validaciones exitosas");
 	}
@@ -331,11 +331,11 @@ public class TecnicoServiceImpl implements TecnicoService {
 			return respuestaServicio;
 		}
 		if (!isValidRFC(tecnicoDTO.getRFC())) {
-			respuestaServicio.setMensajeRespuesta("El RFC en MAYÚSCULAS y revisar que tengan 13 dígitos");
+			respuestaServicio.setMensajeRespuesta("El RFC en MAYUSCULAS y revisar que tengan 13 digitos");
 			return respuestaServicio;
 		}
 		if (!isValidCURP(tecnicoDTO.getCURP())) {
-			respuestaServicio.setMensajeRespuesta("El CURP en MAYÚSCULAS y revisar que tenga 18 dígitos");
+			respuestaServicio.setMensajeRespuesta("El CURP en MAYUSCULAS y revisar que tenga 18 digitos");
 		}
 		return new RespuestaServicio("200", "validaciones exitosas");
 	}
