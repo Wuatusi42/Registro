@@ -348,7 +348,7 @@ function mostrarModal(element) {
 
     // Llamada AJAX para obtener los detalles
     $.ajax({
-        url: "/TecnicosRegistrar/getDetailInfo",
+        url:window.location.origin + "/TecnicosRegistrar/getDetailInfo",
         type: "GET",
         data: { idtecnico: idTecnico },
         success: function(response) {
