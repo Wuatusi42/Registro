@@ -117,7 +117,11 @@
 									th:value="${#dates.format(tecnicoDTO.dateBhirthday, 'yyyy-MM-dd')}"
 									type="date" id="birthday">
 							</div>
-
+							<div th:if="${tecnicoDTO.idTecnicoDTO != null}">
+							    <input type="text" class="form-control" placeholder="Banco" disabled th:value="${infoDetail.nombreBanco}" />
+							    <input type="text" class="form-control" placeholder="Código de Activación" disabled th:value="${infoDetail.codigoActivacion}" />
+							    <input type="text" class="form-control" placeholder="Código Resumido" disabled th:value="${infoDetail.codigoResumido}" />
+							</div>
 							<!-- Campo oculto para el ID -->
 							<input type="hidden" th:field="*{idTecnicoDTO}" />
 
@@ -141,6 +145,7 @@
 									th:text="${mensajeExito != null ? mensajeExito : mensajeError}"></h4>
 								<button type="submit" class="btn btn-primary">Entendido</button>
 							</form>
+
 						</div>
 					</div>
 					<div id="popupRegistro" th:if="${param.mensaje != null}"
@@ -213,8 +218,9 @@
 					                    <th>Apellido Paterno</th>
 					                    <th>Apellido Materno</th>
 					                    <th>Correo Electrónico</th>
+										<th>Estatus</th>
+										<th>Banco</th>
 					                    <th>Editar</th>
-					                    <th>Mas</th>
 					                </tr>
 					            </thead>
 					            <tbody id="tableBody">
@@ -223,16 +229,19 @@
 					                    <td th:text="${tecnico.apellidoPaterno}"></td>
 					                    <td th:text="${tecnico.apellidoMaterno}"></td>
 					                    <td th:text="${tecnico.email}"></td>
+										<td>
+										    <i class="bi bi-check-circle-fill text-success" th:if="${tecnico.activo}"></i>
+										    <i class="bi bi-dash-circle-fill text-danger" th:unless="${tecnico.activo}"></i>
+										</td>
+										<td>
+											<span th:if="${tecnico.bancosTecnicos != null}" th:each="bancoTecnico : ${tecnico.bancosTecnicos}">
+											<span th:if="${bancoTecnico != null and bancoTecnico.bancos != null}" th:text="${bancoTecnico.bancos.nombre}"></span>
+										    </span>
+											<span th:if="${tecnico.bancosTecnicos == null || tecnico.bancosTecnicos.isEmpty()}">No asignado</span>
+										</td>
 					                    <td>
 					                        <a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}" class="btn btn-primary">
 					                            <i class="bi bi-pencil-fill"></i>
-					                        </a>
-					                    </td>
-					                    <td>
-					                        <a th:href="@{/getDetailInfo(idtecnico=${tecnico.idTecnico})}"
-					                            th:attr="data-nombreBanco=${infoDetail?.nombreBanco}, data-codigoActivacion=${infoDetail?.codigoActivacion}, data-codigoResumido=${infoDetail?.codigoResumido}"
-					                            class="boton" onclick="mostrarModal(this); return false;">
-					                            Ver Detalles
 					                        </a>
 					                    </td>
 					                </tr>
@@ -308,6 +317,7 @@
 					</p>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 
@@ -343,43 +353,25 @@
 </style>
 
 	<script>
-function mostrarModal(element) {
-    var idTecnico = element.getAttribute("href").split("=")[1];
+		function mostrarDetalles(link) {
+		        // Obtener el contenedor de detalles
+		        var detalles = link.nextElementSibling;
 
-    // Llamada AJAX para obtener los detalles
-    $.ajax({
-        url: "/TecnicosRegistrar/getDetailInfo",
-        type: "GET",
-        data: { idtecnico: idTecnico },
-        success: function(response) {
-        	console.log("detalles: ", response);
-        	
-            document.getElementById('nombreBanco').innerText = response.nombreBanco || 'No disponible';
-            document.getElementById('codigoActivacion').innerText = response.codigoActivacion || 'No disponible';
-            document.getElementById('codigoResumido').innerText = response.codigoResumido || 'No disponible';
+		        // Alternar la visibilidad del contenedor
+		        if (detalles.style.display === "none" || detalles.style.display === "") {
+		            detalles.style.display = "block";  // Mostrar
+		        } else {
+		            detalles.style.display = "none";  // Ocultar
+		        }
 
-            document.getElementById('detalleModal').style.display = "block";
-        },
-        error: function() {
-            alert("Error al obtener los detalles del técnico.");
-        }
-    });
-
-    return false; // Evita la navegación del enlace
-}
-
-function cerrarModal() {
-        document.getElementById('detalleModal').style.display = 'none';
-    }
-	document.getElementById('reiniciarFiltros').addEventListener('click', function() {
-	      // Limpia los campos de texto
-	      document.getElementById('nombre').value = '';
-	      document.getElementById('email').value = '';
-	      
-	      // Si tienes otros filtros select, también los puedes limpiar
-	      document.getElementById('estado').value = '';
-	      document.getElementById('status').value = '';
-	  });
+		        // Opcionalmente, si deseas que los otros detalles se oculten cuando se abra uno
+		        var allDetalles = document.querySelectorAll('.detalles');
+		        allDetalles.forEach(function (detalle) {
+		            if (detalle !== detalles) {
+		                detalle.style.display = "none"; // Ocultar los demás
+		            }
+		        });
+		    }
 	  document.getElementById("searchInput").addEventListener("input", function() {
 	      const searchValue = this.value.toLowerCase();
 	      const rows = document.querySelectorAll("#tableBody tr");
@@ -390,9 +382,10 @@ function cerrarModal() {
 	          const apellidoPaterno = columns[1].textContent.toLowerCase();
 	          const apellidoMaterno = columns[2].textContent.toLowerCase();
 	          const email = columns[3].textContent.toLowerCase();
+			  const banco = columns[5].textContent.toLocaleLowerCase();
 
 	          // Comprobar si alguno de los valores coincide con la búsqueda
-	          if (nombre.includes(searchValue) || apellidoPaterno.includes(searchValue) || apellidoMaterno.includes(searchValue) || email.includes(searchValue)) {
+	          if (nombre.includes(searchValue) || apellidoPaterno.includes(searchValue) || apellidoMaterno.includes(searchValue) || email.includes(searchValue) ||banco.includes(searchValue)) {
 	              row.style.display = "";
 	          } else {
 	              row.style.display = "none";

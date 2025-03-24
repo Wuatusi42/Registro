@@ -10,6 +10,7 @@ import com.indexia.TecnicosRegistrar.model.Repository.BancosTecnicosDAO;
 import com.indexia.TecnicosRegistrar.model.Repository.CodigoActivacionDAO;
 import com.indexia.TecnicosRegistrar.model.Repository.TecnicoDAO;
 import com.indexia.TecnicosRegistrar.model.mapper.TecnicoMapper;
+import com.indexia.TecnicosRegistrar.model.utils.DetalleDeInfoDTO;
 import com.indexia.TecnicosRegistrar.model.utils.RespuestaServicio;
 import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
 import org.apache.poi.ss.usermodel.*;
@@ -50,8 +51,8 @@ public class TecnicoServiceImpl implements TecnicoService {
 
 		try {
 			Tecnico tecnico = new Tecnico();
-
 			if (tecnicoDTO.getIdTecnicoDTO() != null) {
+		
 				// Actualización
 				tecnico = tecnicoDAO.findById(tecnicoDTO.getIdTecnicoDTO())
 						.orElseThrow(() -> new Exception("Técnico no encontrado"));
@@ -70,6 +71,7 @@ public class TecnicoServiceImpl implements TecnicoService {
 				tecnico.setEstado(tecnicoDTO.getState());
 				tecnico.setZona(tecnicoDTO.getZone());
 				tecnico.setActivo(tecnicoDTO.getStatus());
+
 				tecnicoDAO.save(tecnico);
 				respuestaServicio.setMensajeRespuesta("Técnico actualizado correctamente.");
 			} else {
