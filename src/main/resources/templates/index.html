@@ -119,8 +119,6 @@
 							</div>
 							<div th:if="${tecnicoDTO.idTecnicoDTO != null}">
 							    <input type="text" class="form-control" placeholder="Banco" disabled th:value="${infoDetail.nombreBanco}" />
-							    <input type="text" class="form-control" placeholder="Código de Activación" disabled th:value="${infoDetail.codigoActivacion}" />
-							    <input type="text" class="form-control" placeholder="Código Resumido" disabled th:value="${infoDetail.codigoResumido}" />
 							</div>
 							<!-- Campo oculto para el ID -->
 							<input type="hidden" th:field="*{idTecnicoDTO}" />

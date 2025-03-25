@@ -61,6 +61,7 @@
 	            // Actualizar la lista en la sesión después de registrar un técnico
 	            List<Tecnico> tecnicosActualizados = tecnicoService.obtenerTodosLosTecnicos();
 	            session.setAttribute("tecnicos", tecnicosActualizados);
+	            model.addAttribute("infoDetail", new DetalleDeInfoDTO());
 	            model.addAttribute("tecnicos", tecnicosActualizados);
 	
 	        } catch (Exception e) {
@@ -146,6 +147,7 @@
 	            System.out.println("recargando tecnicos via service...: ");
 	        }
 	        model.addAttribute("tecnicoDTO", new TecnicoDTO());
+	        model.addAttribute("infoDetail", new DetalleDeInfoDTO());
 	        model.addAttribute("tecnicos", tecnicos);
 	
 	        return infoDetail;
