@@ -14,6 +14,8 @@ import com.indexia.TecnicosRegistrar.model.utils.DetalleDeInfoDTO;
 import com.indexia.TecnicosRegistrar.model.utils.RespuestaServicio;
 import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +46,9 @@ public class TecnicoServiceImpl implements TecnicoService {
 	private BancosTecnicosDAO bancosTecnicosDAO;
 	@Autowired
 	private BancosDAO bancosDAO;
-
+	private static final Logger logger = LoggerFactory.getLogger(TecnicoServiceImpl.class);
 	@Override
-	public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO) {
+	public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,String usuario) {
 		RespuestaServicio respuestaServicio = new RespuestaServicio();
 
 		try {
@@ -71,7 +73,9 @@ public class TecnicoServiceImpl implements TecnicoService {
 				tecnico.setEstado(tecnicoDTO.getState());
 				tecnico.setZona(tecnicoDTO.getZone());
 				tecnico.setActivo(tecnicoDTO.getStatus());
-
+				tecnico.setUsuarioActualizacion(usuario);
+				logger.info("Usuario de actualización: {}", usuario);
+				tecnico.setActualizacionTecnico(new Date());
 				tecnicoDAO.save(tecnico);
 				respuestaServicio.setMensajeRespuesta("Técnico actualizado correctamente.");
 			} else {
@@ -85,6 +89,9 @@ public class TecnicoServiceImpl implements TecnicoService {
 				tecEntity.setFechaNacimiento(tecnicoDTO.getDateBhirthday());
 				tecEntity.setEmail(tecEntity.getEmail().toLowerCase());
 				tecEntity.setFechaRegistro(new Date());
+				tecEntity.setActualizacionTecnico(new Date());
+				tecEntity.setUsuarioCreacion(usuario);
+				logger.info("Usuario de creación: {}", usuario);
 				tecnicoDAO.save(tecEntity);
 
 				// Insertar Código de Activación

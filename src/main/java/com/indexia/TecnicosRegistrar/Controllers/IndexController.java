@@ -6,7 +6,10 @@
 	import com.indexia.TecnicosRegistrar.model.utils.DetalleDeInfoDTO;
 	import com.indexia.TecnicosRegistrar.model.utils.RespuestaServicio;
 	import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
-	import org.springframework.beans.factory.annotation.Autowired;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Controller;
 	import org.springframework.ui.Model;
 	import org.springframework.web.bind.annotation.*;
@@ -25,7 +28,7 @@
 	
 	    @Autowired
 	    private CodigoService codigoActivacionService;
-	
+	    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	    @GetMapping("/index")
 	    public String mostrarForm(Model model, HttpSession session) {
 	        List<Tecnico> tecnicos = (List<Tecnico>) session.getAttribute("tecnicos");
@@ -45,16 +48,17 @@
 	    @PostMapping("/registrarForm")
 	    public String registrarTecnico(@ModelAttribute("tecnicoDTO") TecnicoDTO tecnicoDTO, Model model, HttpSession session) {
 	        RespuestaServicio respuestaServicio;
-	
+	        String username = (String) session.getAttribute("username");
+	        logger.info("Nombre de usuario de la sesión: {}", username);
 	        try {
 	            if (tecnicoDTO.getIdTecnicoDTO() != null) {
 	                // Actualización
-	                respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
+	                respuestaServicio = tecnicoService.formTecnico(tecnicoDTO,username);
 	                model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
 	                model.addAttribute("infoDetail", new DetalleDeInfoDTO());
 	            } else {
 	                // Registro
-	                respuestaServicio = tecnicoService.formTecnico(tecnicoDTO);
+	                respuestaServicio = tecnicoService.formTecnico(tecnicoDTO,username);
 	                model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
 	            }
 	

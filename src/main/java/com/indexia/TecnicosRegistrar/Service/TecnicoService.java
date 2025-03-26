@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface TecnicoService {
-    public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO);
+    public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,String usuario);
     //public void registerFormat(MultipartFile file) throws IOException;
     public RespuestaServicio registerFormat(InputStream file)throws IOException;
     public boolean existeEmail(String email);

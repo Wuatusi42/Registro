@@ -37,10 +37,6 @@ public class Tecnico {
     @Column(name = "fecharegistro")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistro;
-    @PrePersist
-    protected void onCreate() {
-        this.fechaRegistro = new Date(); // Asigna la fecha y hora actual
-    }
 
     @Column(name = "activo")
     private Boolean activo;
@@ -57,8 +53,36 @@ public class Tecnico {
     @OneToMany(mappedBy = "tecnico", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BancosTecnicos> bancosTecnicos;
     // Getters and Setters
+    @Column(name = "usuariocreacion", length = 35) // Mapear a la columna usuariocreacion
+    private String usuarioCreacion;
 
-    public Integer getIdTecnico() {
+    @Column(name = "usuarioactualizacion", length = 35) // Mapear a la columna usuarioactualizacion
+    private String usuarioActualizacion;
+    
+    @Column(name = "actualizaciontecnico")
+    private Date actualizacionTecnico;
+    @PrePersist
+    protected void onCreate() {
+        this.fechaRegistro = new Date(); // Asigna la fecha y hora actual
+        this.actualizacionTecnico = new Date(); // Asigna la fecha y hora actual
+    }
+    public String getUsuarioCreacion() {
+		return usuarioCreacion;
+	}
+
+	public void setUsuarioCreacion(String usuarioCreacion) {
+		this.usuarioCreacion = usuarioCreacion;
+	}
+
+	public String getUsuarioActualizacion() {
+		return usuarioActualizacion;
+	}
+
+	public void setUsuarioActualizacion(String usuarioActualizacion) {
+		this.usuarioActualizacion = usuarioActualizacion;
+	}
+
+	public Integer getIdTecnico() {
         return idTecnico;
     }
 
@@ -169,6 +193,11 @@ public class Tecnico {
 	public void setZona(String zona) {
 		this.zona = zona;
 	}
+	public Date getActualizacionTecnico() {
+		return actualizacionTecnico;
+	}
+	public void setActualizacionTecnico(Date actualizacionTecnico) {
+		this.actualizacionTecnico = actualizacionTecnico;
+	}
 	
-    
 }
