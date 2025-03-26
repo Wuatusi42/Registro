@@ -218,6 +218,8 @@
 					                    <th>Correo Electrónico</th>
 										<th>Estatus</th>
 										<th>Banco</th>
+										<th>Creador</th>
+										<th>Editor</th>
 					                    <th>Editar</th>
 					                </tr>
 					            </thead>
@@ -237,6 +239,8 @@
 										    </span>
 											<span th:if="${tecnico.bancosTecnicos == null || tecnico.bancosTecnicos.isEmpty()}">No asignado</span>
 										</td>
+										<td th:text="${tecnico.usuarioCreacion}"></td>
+										<td th:text="${tecnico.usuarioActualizacion}"></td>
 					                    <td>
 					                        <a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}" class="btn btn-primary">
 					                            <i class="bi bi-pencil-fill"></i>
