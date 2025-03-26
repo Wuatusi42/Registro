@@ -220,6 +220,7 @@
 										<th>Banco</th>
 										<th>Creador</th>
 										<th>Editor</th>
+										<th>Fecha De Actualizacion</th>
 					                    <th>Editar</th>
 					                </tr>
 					            </thead>
@@ -241,6 +242,7 @@
 										</td>
 										<td th:text="${tecnico.usuarioCreacion}"></td>
 										<td th:text="${tecnico.usuarioActualizacion}"></td>
+										<td th:text="${tecnico.actualizacionTecnico}"></td>
 					                    <td>
 					                        <a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}" class="btn btn-primary">
 					                            <i class="bi bi-pencil-fill"></i>
