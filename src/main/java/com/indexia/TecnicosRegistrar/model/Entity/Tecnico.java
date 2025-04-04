@@ -53,11 +53,13 @@ public class Tecnico {
     @OneToMany(mappedBy = "tecnico", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BancosTecnicos> bancosTecnicos;
     // Getters and Setters
-    @Column(name = "usuariocreacion", length = 35) // Mapear a la columna usuariocreacion
-    private String usuarioCreacion;
-
-    @Column(name = "usuarioactualizacion", length = 35) // Mapear a la columna usuarioactualizacion
-    private String usuarioActualizacion;
+    @ManyToOne
+    @JoinColumn(name = "usuariocreacion")
+    private Usuarios usuarioCreacion;
+    
+    @ManyToOne
+    @JoinColumn(name = "usuarioactualizacion")
+    private Usuarios usuarioActualizacion;
     
     @Column(name = "actualizaciontecnico")
     private Date actualizacionTecnico;
@@ -66,21 +68,6 @@ public class Tecnico {
         this.fechaRegistro = new Date(); // Asigna la fecha y hora actual
         this.actualizacionTecnico = new Date(); // Asigna la fecha y hora actual
     }
-    public String getUsuarioCreacion() {
-		return usuarioCreacion;
-	}
-
-	public void setUsuarioCreacion(String usuarioCreacion) {
-		this.usuarioCreacion = usuarioCreacion;
-	}
-
-	public String getUsuarioActualizacion() {
-		return usuarioActualizacion;
-	}
-
-	public void setUsuarioActualizacion(String usuarioActualizacion) {
-		this.usuarioActualizacion = usuarioActualizacion;
-	}
 
 	public Integer getIdTecnico() {
         return idTecnico;
@@ -198,6 +185,22 @@ public class Tecnico {
 	}
 	public void setActualizacionTecnico(Date actualizacionTecnico) {
 		this.actualizacionTecnico = actualizacionTecnico;
+	}
+
+	public Usuarios getUsuarioCreacion() {
+		return usuarioCreacion;
+	}
+
+	public void setUsuarioCreacion(Usuarios usuarioCreacion) {
+		this.usuarioCreacion = usuarioCreacion;
+	}
+
+	public Usuarios getUsuarioActualizacion() {
+		return usuarioActualizacion;
+	}
+
+	public void setUsuarioActualizacion(Usuarios usuarioActualizacion) {
+		this.usuarioActualizacion = usuarioActualizacion;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.indexia.TecnicosRegistrar.Service;
 
 import com.indexia.TecnicosRegistrar.model.Entity.Tecnico;
+import com.indexia.TecnicosRegistrar.model.Entity.Usuarios;
 import com.indexia.TecnicosRegistrar.model.utils.RespuestaServicio;
 import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface TecnicoService {
-    public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,String usuario);
+    public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,Usuarios usuario);
     //public void registerFormat(MultipartFile file) throws IOException;
     public RespuestaServicio registerFormat(InputStream file)throws IOException;
     public boolean existeEmail(String email);

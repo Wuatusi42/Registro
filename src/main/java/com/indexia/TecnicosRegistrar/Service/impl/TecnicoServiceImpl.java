@@ -5,6 +5,7 @@ import com.indexia.TecnicosRegistrar.model.Entity.Bancos;
 import com.indexia.TecnicosRegistrar.model.Entity.BancosTecnicos;
 import com.indexia.TecnicosRegistrar.model.Entity.CodigosActivacion;
 import com.indexia.TecnicosRegistrar.model.Entity.Tecnico;
+import com.indexia.TecnicosRegistrar.model.Entity.Usuarios;
 import com.indexia.TecnicosRegistrar.model.Repository.BancosDAO;
 import com.indexia.TecnicosRegistrar.model.Repository.BancosTecnicosDAO;
 import com.indexia.TecnicosRegistrar.model.Repository.CodigoActivacionDAO;
@@ -48,13 +49,11 @@ public class TecnicoServiceImpl implements TecnicoService {
 	private BancosDAO bancosDAO;
 	private static final Logger logger = LoggerFactory.getLogger(TecnicoServiceImpl.class);
 	@Override
-	public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,String usuario) {
+	public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,Usuarios usuario) {
 		RespuestaServicio respuestaServicio = new RespuestaServicio();
-
 		try {
 			Tecnico tecnico = new Tecnico();
 			if (tecnicoDTO.getIdTecnicoDTO() != null) {
-		
 				// Actualización
 				tecnico = tecnicoDAO.findById(tecnicoDTO.getIdTecnicoDTO())
 						.orElseThrow(() -> new Exception("Técnico no encontrado"));
