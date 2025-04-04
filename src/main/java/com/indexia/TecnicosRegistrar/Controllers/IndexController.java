@@ -3,6 +3,8 @@ package com.indexia.TecnicosRegistrar.Controllers;
 import com.indexia.TecnicosRegistrar.Service.CodigoService;
 import com.indexia.TecnicosRegistrar.Service.TecnicoService;
 import com.indexia.TecnicosRegistrar.model.Entity.Tecnico;
+import com.indexia.TecnicosRegistrar.model.Entity.Usuarios;
+import com.indexia.TecnicosRegistrar.model.Repository.UsuariosDAO;
 import com.indexia.TecnicosRegistrar.model.utils.DetalleDeInfoDTO;
 import com.indexia.TecnicosRegistrar.model.utils.RespuestaServicio;
 import com.indexia.TecnicosRegistrar.model.utils.TecnicoDTO;
@@ -24,9 +26,12 @@ public class IndexController {
 
     @Autowired
     private TecnicoService tecnicoService;
-
+    
     @Autowired
     private CodigoService codigoActivacionService;
+    
+    @Autowired
+    private UsuariosDAO usuariosDAO;
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @GetMapping("/index")
@@ -43,10 +48,12 @@ public class IndexController {
     @PostMapping("/registrarForm")
     public String registrarTecnico(@ModelAttribute("tecnicoDTO") TecnicoDTO tecnicoDTO, Model model, HttpSession session) {
         RespuestaServicio respuestaServicio;
+        Usuarios usernameC = (Usuarios) session.getAttribute("usernameC");
         String username = (String) session.getAttribute("username");
         logger.info("Nombre de usuario de la sesión: {}", username);
         try {
-            respuestaServicio = tecnicoService.formTecnico(tecnicoDTO, username);
+        	Usuarios usuario = usuariosDAO.findByNombreUsuario(username);
+            respuestaServicio = tecnicoService.formTecnico(tecnicoDTO, usernameC);
             model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
             // **CAMBIO:** Limpiar el formulario creando un nuevo TecnicoDTO después del éxito.
             model.addAttribute("tecnicoDTO", new TecnicoDTO());

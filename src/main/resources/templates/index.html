@@ -43,7 +43,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<h2
-							th:text="${tecnicoDTO.idTecnicoDTO == null ? 'Registro de Técnicos' : 'Actualizar Técnico'}">
+							th:text="${tecnicoDTO != null && tecnicoDTO.idTecnicoDTO == null ? 'Registro de Técnicos' : 'Actualizar Técnico'}">
 						</h2>
 						<form th:action="@{/registrarForm}" th:object="${tecnicoDTO}"
 							method="post">
@@ -240,8 +240,8 @@
 										    </span>
 											<span th:if="${tecnico.bancosTecnicos == null || tecnico.bancosTecnicos.isEmpty()}">No asignado</span>
 										</td>
-										<td th:text="${tecnico.usuarioCreacion}"></td>
-										<td th:text="${tecnico.usuarioActualizacion}"></td>
+										<td th:text="${tecnico.usuarioCreacion?.nombreUsuario}"></td>
+										<td th:text="${tecnico.usuarioActualizacion?.nombreUsuario}"></td>
 										<td th:text="${tecnico.actualizacionTecnico}"></td>
 					                    <td>
 					                        <a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}" class="btn btn-primary">
