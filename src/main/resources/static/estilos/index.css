@@ -1,19 +1,22 @@
-body{
+body {
   background: #36baf5;
- }
-.content{
+}
+
+.content {
   height: auto;
   margin: 0 auto;
   padding: 5px;
 }
-.nav-pills{
+
+.nav-pills {
   width: 450px;
 }
-.nav-item{
+
+.nav-item {
   width: 50%;
 }
 
-.nav-pills .nav-link{
+.nav-pills .nav-link {
   font-weight: bold;
   padding-top: 13px;
   text-align: center;
@@ -22,11 +25,13 @@ body{
   border-radius: 30px;
   height: 100px;
 }
-.nav-pills .nav-link.active{
+
+.nav-pills .nav-link.active {
   background: #fff;
   color: #000;
 }
-.tab-content{
+
+.tab-content {
   position: absolute;
   width: 100%;
   height: auto;
@@ -39,132 +44,136 @@ body{
   padding: 30px;
   margin-bottom: 50px;
 }
-.tab-content button{
+
+.tab-content button {
   border-radius: 15px;
-  width: 100px;
-  margin: 0 auto;
-  float: right;
+  width: auto;
+  margin-top: 10px;
+  display: block;
+  margin-left: 0;
+  text-align: center;
+  clear: both;
+  padding: 10px 20px;
 }
-.table{
-  width: 100%; /* Asegura que la tabla ocupe todo el espacio disponible */
+
+.table {
+  width: auto; /* Ajusta al contenido */
+  min-width: 100%; /* Asegura que al menos ocupe el ancho del contenedor */
 }
-.mt-4{
-	width: 980px;
+
+.mt-4 {
+  margin-top: 0rem !important;
 }
-.col-md-6{
-	width: 35%;
+
+.col-md-6 {
+  width: 35%;
 }
+
 .imagen-formulario {
-    width: 80px; /* Tamaño pequeño */
-    height: auto;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+  width: 80px;
+  height: auto;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
-h2,h3{
-	font-size: 30px;
-	 text-align: center;
-	 margin-bottom: 20px;
-	 color: #46A2FD;
+
+h2, h3 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #46A2FD;
 }
-.form-control{
-	margin-top: 10px;
-	width: 80%;
+
+.form-control {
+  margin-top: 10px;
+  width: 80%;
 }
+
 .container.tab-pane.active {
   margin-left: 0 !important;
 }
-.mt-4 {
-    margin-top: 0rem !important;
-}
-#tablaTécnicos{
-	max-height: 600px;
-	overflow-y: auto;
-}
-.tab-content {
-  position: relative; /* Asegura que los elementos dentro de este contenedor se alineen correctamente */
+
+#tablaTécnicos {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: auto; /* Habilita el scroll horizontal */
 }
 
-.tab-content button {
-    border-radius: 15px;
-    width: auto; /* Asegura que el botón ocupe todo el ancho disponible */
-    margin-top: 10px; /* Separación entre el botón y el contenido anterior */
-    display: block; /* El botón se comporta como un bloque */
-    margin-left: 0; /* Elimina cualquier desplazamiento hacia la izquierda */
-    text-align: center; /* Centra el texto del botón */
-    clear: both; /* Limpia cualquier flotante previo */
-}
 #popup, #popupRegistro {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.3s ease-in-out;
-	display: flex; 
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-in-out;
+  display: flex;
 }
 
 #popup > div, #popupRegistro > div {
-    background: #fff;
-    padding: 25px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	display: flex; /* Agregado: Flexbox para alinear los elementos dentro del contenedor */
-	    flex-direction: column; /* Agregado: Alineación vertical de los elementos dentro del popup */
-	    justify-content: center; /* Agregado: Centra los elementos verticalmente */
-	    align-items: center; /* Agregado: Centra los elementos horizontalmente */
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #popup h4, #popupRegistro h4 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 #popup button, #popupRegistro button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-	width: 100%; /* Agregado: Hace que el botón ocupe el ancho completo disponible */
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 #popup button:hover, #popupRegistro button:hover {
-    background-color: #45a049;
-}
-form button[type="submit"] {
-    width: auto; /* Asegura que el ancho sea el adecuado para los botones del formulario */
-    max-width: unset; /* Elimina cualquier restricción de tamaño */
-    padding: 10px 20px; /* Asegura que el tamaño del botón sea el adecuado */
+  background-color: #45a049;
 }
 
-/* Opcional: si tienes botones adicionales dentro de los formularios, también puedes aplicarles un estilo similar */
+form button[type="submit"] {
+  width: auto;
+  max-width: unset;
+  padding: 10px 20px;
+}
+
 form .btn {
-    width: auto;
-    padding: 10px 20px;
+  width: auto;
+  padding: 10px 20px;
 }
-#cerrarPopupRegistro{
-	max-width: 100%;
-	margin-top: 0px;
+
+#cerrarPopupRegistro {
+  max-width: 100%;
+  margin-top: 0px;
 }
+
 .modal-backdrop {
-    display: none !important;
+  display: none !important;
 }
-.modal-content{
-	width: 100% !important;
+
+.modal-content {
+  width: 100% !important;
 }
+
 input[type="date"] {
   display: block;
   width: 80%;
@@ -188,6 +197,85 @@ input[type="date"]:disabled {
   background-color: #e9ecef;
   opacity: 1;
 }
+
 #searchInput {
-   width: 100%;
-   }
+  width: 100%;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem;
+  white-space: nowrap; /* Evita el salto de línea y fuerza el scroll */
+}
+
+.table th:nth-child(1), /* Nombre */
+.table td:nth-child(1) {
+  min-width: 120px;
+}
+
+.table th:nth-child(2), /* Apellido Paterno */
+.table td:nth-child(2) {
+  min-width: 100px;
+}
+
+.table th:nth-child(3), /* Apellido Materno */
+.table td:nth-child(3) {
+  min-width: 100px;
+}
+
+.table th:nth-child(4), /* Correo Electrónico */
+.table td:nth-child(4) {
+  min-width: 180px;
+}
+
+.table th:nth-child(5), /* Estatus */
+.table td:nth-child(5) {
+  min-width: 80px;
+  text-align: center;
+}
+
+.table th:nth-child(6), /* Banco */
+.table td:nth-child(6) {
+  min-width: 120px;
+}
+
+.table th:nth-child(7), /* Creador */
+.table td:nth-child(7) {
+  min-width: 100px;
+}
+
+.table th:nth-child(8), /* Editor */
+.table td:nth-child(8) {
+  min-width: 100px;
+}
+
+.table th:nth-child(9), /* Fecha De Actualización */
+.table td:nth-child(9) {
+  min-width: 150px;
+}
+
+.table th:nth-child(10), /* Editar */
+.table td:nth-child(10) {
+  min-width: 80px;
+  text-align: center;
+}
+.botones-formulario {
+    display: flex; /* Activa Flexbox para el contenedor */
+    gap: 10px; /* Espacio entre los botones (opcional) */
+    margin-top: 20px; /* Espacio superior para separarlos de los campos */
+    width: 80%; /* O el ancho que necesites para el contenedor de los botones */
+    justify-content: flex-start; /* Alinea los botones al inicio (izquierda) */
+    align-items: center; /* Alinea verticalmente los elementos dentro del contenedor */
+}
+
+.botones-formulario button.btn-primary,
+.botones-formulario a.btn-secondary {
+    width: 150px; /* Asegura que tengan el mismo ancho */
+    text-align: center; /* Centra el texto */
+    height: 38px;      /* Define una altura específica */
+    line-height: 38px; /* Centra verticalmente el texto */
+    padding: 0;        /* Elimina el padding predeterminado */
+    display: inline-flex; /* Permite la alineación vertical interna */
+    align-items: center; /* Centra verticalmente el contenido interno */
+    justify-content: center; /* Centra horizontalmente el contenido interno */
+}

@@ -11,7 +11,7 @@ import java.util.List;
 public interface TecnicoService {
     public RespuestaServicio formTecnico(TecnicoDTO tecnicoDTO,Usuarios usuario);
     //public void registerFormat(MultipartFile file) throws IOException;
-    public RespuestaServicio registerFormat(InputStream file)throws IOException;
+    public RespuestaServicio registerFormat(InputStream file,Usuarios usuario)throws IOException;
     public boolean existeEmail(String email);
     public boolean isValidEmail(String email);
     public boolean isValidNombre(String nombre);

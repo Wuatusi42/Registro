@@ -125,7 +125,7 @@ public class TecnicoServiceImpl implements TecnicoService {
 	}
 
 	@Override
-	public RespuestaServicio registerFormat(InputStream file) throws IOException {
+	public RespuestaServicio registerFormat(InputStream file,Usuarios usuario) throws IOException {
 		RespuestaServicio respuestaServicio = new RespuestaServicio();
 		List<Tecnico> tecnicoList = new LinkedList<>();
 
@@ -213,7 +213,8 @@ public class TecnicoServiceImpl implements TecnicoService {
 					tecnico.setZona(zona);
 					tecnico.setActivo(true);
 					tecnico.setFechaRegistro(new Date());
-
+					tecnico.setUsuarioCreacion(usuario);
+					logger.info("Usuario de creación: {}", usuario);
 					tecnicoList.add(tecnico);
 				}
 			}
@@ -390,7 +391,7 @@ public class TecnicoServiceImpl implements TecnicoService {
 
 	@Override
 	public List<Tecnico> obtenerTodosLosTecnicos() {
-		List<Tecnico> tecnicos = tecnicoDAO.findAll();
+		List<Tecnico> tecnicos = tecnicoDAO.findAllByOrderByActualizacionTecnicoDesc();
 		return tecnicos;
 	}
 

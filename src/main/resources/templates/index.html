@@ -124,12 +124,14 @@
 							<input type="hidden" th:field="*{idTecnicoDTO}" />
 
 							<!-- Botón de submit que cambia dinámicamente -->
-							<button type="submit"
-								th:text="${tecnicoDTO.idTecnicoDTO == null ? 'Registrar' : 'Actualizar'}"
-								class="btn btn-primary"
-								style="margin: 25px 45px;"></button>
-							<br> <a th:if="${tecnicoDTO.idTecnicoDTO != null}"
-								th:href="@{/index}" class="btn btn-secondary"> Cancelar </a>
+							<div class="botones-formulario">
+							       <button type="submit"
+							               th:text="${tecnicoDTO.idTecnicoDTO == null ? 'Registrar' : 'Actualizar'}"
+							               class="btn btn-primary"></button>
+							       <a th:if="${tecnicoDTO.idTecnicoDTO != null}"
+							          th:href="@{/index}" class="btn btn-secondary"> Cancelar </a>
+									  <br>
+							   </div>
 						</form>
 						<p th:if="${mensaje}" th:text="${mensaje}"></p>
 					</div>

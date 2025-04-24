@@ -18,5 +18,5 @@ public interface TecnicoDAO extends JpaRepository<Tecnico,Integer> {
     List<Tecnico> findByNombre(String nombre);
     List<Tecnico> findByEmail(String email);
     List<Tecnico> findByNombreAndEmail(String nombre, String email);
-    
+    List<Tecnico> findAllByOrderByActualizacionTecnicoDesc();
 }
