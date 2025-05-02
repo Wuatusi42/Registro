@@ -45,57 +45,7 @@ public class IndexController {
         return "index";
     }
 
-    @PostMapping("/registrarForm")
-    public String registrarTecnico(@ModelAttribute("tecnicoDTO") TecnicoDTO tecnicoDTO, Model model, HttpSession session) {
-        RespuestaServicio respuestaServicio;
-        Usuarios usernameC = (Usuarios) session.getAttribute("usernameC");
-        String username = (String) session.getAttribute("username");
-        logger.info("Nombre de usuario de la sesión: {}", username);
-        try {
-            Usuarios usuario = usuariosDAO.findByNombreUsuario(username);
-            respuestaServicio = tecnicoService.formTecnico(tecnicoDTO, usernameC);
-<<<<<<< Updated upstream
-            model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
-            // *CAMBIO:* Limpiar el formulario creando un nuevo TecnicoDTO después del éxito.
-            model.addAttribute("tecnicoDTO", new TecnicoDTO());
-        } catch (Exception e) {
-            model.addAttribute("mensajeError", "Error al registrar el técnico: " + e.getMessage());
-            // *CAMBIO:* Mantener los datos en el formulario en caso de error.
-            model.addAttribute("tecnicoDTO", tecnicoDTO);
-        }
-        model.addAttribute("infoDetail", new DetalleDeInfoDTO());
-        // *CAMBIO:* Cargar la lista de técnicos directamente del servicio después de la operación.
-=======
-            if (respuestaServicio.getCodigoRespuesta().equals("200")) {
-                model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
-                // **MODIFICACIÓN CRUCIAL:** Redirigir a editar SOLO si el ID es un número válido (no null)
-                if (tecnicoDTO.getIdTecnicoDTO() != null) {
-                    return "redirect:/editar-tecnico?id=" + tecnicoDTO.getIdTecnicoDTO();
-                } else {
-                    // Si es un nuevo registro, volvemos al index mostrando el mensaje de éxito y limpiando el formulario
-                    model.addAttribute("tecnicoDTO", new TecnicoDTO());
-                    List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
-                    model.addAttribute("tecnicos", tecnicos);
-                    model.addAttribute("infoDetail", new DetalleDeInfoDTO());
-                    return "index";
-                }
-            } else {
-                model.addAttribute("mensajeError", respuestaServicio.getMensajeRespuesta());
-                // Mantener los datos en el formulario en caso de error.
-                model.addAttribute("tecnicoDTO", tecnicoDTO);
-            }
-        } catch (Exception e) {
-            model.addAttribute("mensajeError", "Error al registrar/actualizar el técnico: " + e.getMessage());
-            // Mantener los datos en el formulario en caso de error.
-            model.addAttribute("tecnicoDTO", tecnicoDTO);
-        }
-        model.addAttribute("infoDetail", new DetalleDeInfoDTO());
-        // Cargar la lista de técnicos directamente del servicio después de la operación (también para el caso de error o registro exitoso sin redirección)
->>>>>>> Stashed changes
-        List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
-        model.addAttribute("tecnicos", tecnicos);
-        return "index";
-    }
+   
     @PostMapping("/register-format")
     public String saveAll(@RequestParam("file") MultipartFile file, Model model, HttpSession session) throws IOException {
     	Usuarios usernameC = (Usuarios) session.getAttribute("usernameC");
@@ -132,6 +82,45 @@ public class IndexController {
         }
 
         // *CAMBIO:* Cargar la lista de técnicos directamente del servicio.
+        List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
+        model.addAttribute("tecnicos", tecnicos);
+        return "index";
+    }
+    @PostMapping("/registrarForm")
+    public String registrarTecnico(@ModelAttribute("tecnicoDTO") TecnicoDTO tecnicoDTO, Model model, HttpSession session) {
+        RespuestaServicio respuestaServicio;
+        Usuarios usernameC = (Usuarios) session.getAttribute("usernameC");
+        String username = (String) session.getAttribute("username");
+        logger.info("Nombre de usuario de la sesión: {}", username);
+        try {
+            Usuarios usuario = usuariosDAO.findByNombreUsuario(username);
+            respuestaServicio = tecnicoService.formTecnico(tecnicoDTO, usernameC);
+
+            if (respuestaServicio.getCodigoRespuesta().equals("200")) {
+                model.addAttribute("mensajeExito", respuestaServicio.getMensajeRespuesta());
+
+                // Si es edición (tiene ID), redirigir
+                if (tecnicoDTO.getIdTecnicoDTO() != null) {
+                    return "redirect:/editar-tecnico?id=" + tecnicoDTO.getIdTecnicoDTO();
+                } else {
+                    // Nuevo registro: limpiar formulario y volver al index
+                    model.addAttribute("tecnicoDTO", new TecnicoDTO());
+                    List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
+                    model.addAttribute("tecnicos", tecnicos);
+                    model.addAttribute("infoDetail", new DetalleDeInfoDTO());
+                    return "index";
+                }
+            } else {
+                model.addAttribute("mensajeError", respuestaServicio.getMensajeRespuesta());
+                model.addAttribute("tecnicoDTO", tecnicoDTO);
+            }
+
+        } catch (Exception e) {
+            model.addAttribute("mensajeError", "Error al registrar/actualizar el técnico: " + e.getMessage());
+            model.addAttribute("tecnicoDTO", tecnicoDTO);
+        }
+
+        model.addAttribute("infoDetail", new DetalleDeInfoDTO());
         List<Tecnico> tecnicos = tecnicoService.obtenerTodosLosTecnicos();
         model.addAttribute("tecnicos", tecnicos);
         return "index";
