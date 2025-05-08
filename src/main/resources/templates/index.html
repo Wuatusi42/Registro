@@ -2,76 +2,63 @@
 <html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro De Técnicos</title>
-<link rel="stylesheet" th:href="@{/estilos/index.css}">
-<script th:src="@{/js/script.js}"></script>
-
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registro De Técnicos</title>
+	<link rel="stylesheet" th:href="@{/estilos/index.css}">
+	<script th:src="@{/js/script.js}"></script>
 </head>
 
-<div>
-	<a th:href="@{/}"
-		class="btn btn-dark position-absolute top-0 end-0 m-3"> <i
-		class="bi bi-box-arrow-right"></i> Cerrar sesión
+<body>
+	<a th:href="@{/}" class="btn btn-dark position-absolute top-0 end-0 m-3"> <i class="bi bi-box-arrow-right"></i>
+		Cerrar sesión
 	</a>
 	<div class="content">
 		<!-- Nav pills -->
 		<ul class="nav nav-pills" role="tablist">
-			<li class="nav-item"><a class="nav-link active"
-				data-bs-toggle="pill" href="#regis">Registro Individual</a></li>
-			<li class="nav-item"><a class="nav-link" data-bs-toggle="pill"
-				href="#login">Registro Masivo</a></li>
+			<li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#regis">Registro Individual</a>
+			</li>
+			<li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#login">Registro Masivo</a></li>
 		</ul>
 
 		<!-- Tab panes -->
 		<div class="tab-content">
-			<img th:src="@{/images/logoTPV.jpg}" alt="Imagen ilustrativa"
-				class="imagen-formulario">
+			<img th:src="@{/images/logoTPV.jpg}" alt="Imagen ilustrativa" class="imagen-formulario">
 			<div id="regis" class="container tab-pane active">
-				<div class="row">
-					<div class="col-md-4">
+				<div class="row" id="row-1">
+					<div class="col-md-3">
 						<h2
 							th:text="${tecnicoDTO != null && tecnicoDTO.idTecnicoDTO == null ? 'Registro de Técnicos' : 'Actualizar Técnico'}">
 						</h2>
-						<form th:action="@{/registrarForm}" th:object="${tecnicoDTO}"
-							method="post">
+						<form th:action="@{/registrarForm}" th:object="${tecnicoDTO}" method="post">
 							<!-- Campos del formulario -->
-							<input th:field="*{name}" type="text" class="form-control"
-								required placeholder="Nombre(s)" maxlength="100" /> <input
-								th:field="*{apellidoPatern}" type="text" class="form-control"
-								required placeholder="Apellido Paterno" maxlength="100" /> <input
-								th:field="*{apellidoMatern}" type="text" class="form-control"
-								required placeholder="Apellido Materno" maxlength="100" /> <input
-								th:field="*{correo}" type="text" class="form-control" required
-								placeholder="Correo Electrónico"
-								title="Por favor, ingresa un correo electrónico válido"
-								maxlength="150" /> <input th:field="*{CURP}" type="text"
-								class="form-control" required placeholder="CURP" minlength="18"
-								maxlength="18" oninput="this.value = this.value.toUpperCase()" />
-							<input th:field="*{RFC}" type="text" class="form-control"
-								required placeholder="RFC" minlength="13" maxlength="13"
-								oninput="this.value = this.value.toUpperCase()" /> <input
-								th:field="*{phone}" type="tel" class="form-control"
-								placeholder="Teléfono (solo 10 dígitos)" minlength="10"
-								maxlength="10" pattern="[^ ]+" /> <input th:field="*{zone}"
-								type="text" class="form-control" placeholder="Población o Zona"
-								style="text-transform: uppercase;"
-								oninput="this.value = this.value.toUpperCase()" /> <label
-								for="exampleInputPassword2">Estado</label> <label
-								for="exampleSelect">Selecciona una opción:</label> <select
-								class="form-control" id="exampleSelect" name="estado"
+							<input th:field="*{name}" type="text" class="form-control" required placeholder="Nombre(s)"
+								maxlength="100" />
+							<input th:field="*{apellidoPatern}" type="text" class="form-control" required
+								placeholder="Apellido Paterno" maxlength="100" />
+							<input th:field="*{apellidoMatern}" type="text" class="form-control" required
+								placeholder="Apellido Materno" maxlength="100" />
+							<input th:field="*{correo}" type="email" class="form-control" required
+								placeholder="Correo Electrónico" title="Por favor, ingresa un correo electrónico válido"
+								maxlength="150" />
+							<input th:field="*{CURP}" type="text" class="form-control" required placeholder="CURP"
+								minlength="18" maxlength="18" oninput="this.value = this.value.toUpperCase()" />
+							<input th:field="*{RFC}" type="text" class="form-control" required placeholder="RFC"
+								minlength="13" maxlength="13" oninput="this.value = this.value.toUpperCase()" />
+							<input th:field="*{phone}" type="tel" class="form-control"
+								placeholder="Teléfono (solo 10 dígitos)" minlength="10" maxlength="10"
+								pattern="[^ ]+" />
+							<input th:field="*{zone}" type="text" class="form-control" placeholder="Población o Zona"
+								style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()" />
+							<label for="exampleInputPassword2">Estado</label> <label for="exampleSelect">Selecciona una
+								opción:</label> <select class="form-control" id="estadoSelect" name="estado"
 								th:field="*{state}">
 								<option value="" disabled selected>Seleccione un estado</option>
 								<option value="AGUASCALIENTES">AGUASCALIENTES</option>
@@ -107,43 +94,41 @@
 								<option value="ZACATECAS">ZACATECAS</option>
 								<option value="CDMX">CDMX</option>
 							</select> <label for="exampleInputPassword2">Estatus</label> <label
-								for="exampleSelect">Selecciona una opción:</label> <select
-								class="form-control" id="exampleSelect" name="status"
-								th:field="*{status}">
+								for="exampleSelect">Selecciona una opción:</label> <select class="form-control"
+								id="estatusSelect" name="status" th:field="*{status}">
 								<option value="1">Activo</option>
 								<option value="0">Inactivo</option>
 							</select> <label for="birthday">Fecha de nacimiento</label>
 							<div class="input-group">
 								<input th:field="*{dateBhirthday}"
-									th:value="${#dates.format(tecnicoDTO.dateBhirthday, 'yyyy-MM-dd')}"
-									type="date" id="birthday">
+									th:value="${#dates.format(tecnicoDTO.dateBhirthday, 'yyyy-MM-dd')}" type="date"
+									id="birthday" class="fecha-actualizacion">
 							</div>
 							<div th:if="${tecnicoDTO.idTecnicoDTO != null}">
-							    <input type="text" class="form-control" placeholder="Banco" disabled th:value="${infoDetail.nombreBanco}" />
+								<input type="text" class="form-control" placeholder="Banco" disabled
+									th:value="${infoDetail.nombreBanco}" />
 							</div>
 							<!-- Campo oculto para el ID -->
 							<input type="hidden" th:field="*{idTecnicoDTO}" />
 
 							<!-- Botón de submit que cambia dinámicamente -->
 							<div class="botones-formulario">
-							       <button type="submit"
-							               th:text="${tecnicoDTO.idTecnicoDTO == null ? 'Registrar' : 'Actualizar'}"
-							               class="btn btn-primary"></button>
-							       <a th:if="${tecnicoDTO.idTecnicoDTO != null}"
-							          th:href="@{/index}" class="btn btn-secondary"> Cancelar </a>
-									  <br>
-							   </div>
+								<button type="submit"
+									th:text="${tecnicoDTO.idTecnicoDTO == null ? 'Registrar' : 'Actualizar'}"
+									class="btn btn-primary"></button>
+								<a th:if="${tecnicoDTO.idTecnicoDTO != null}" th:href="@{/index}"
+									class="btn btn-secondary"> Cancelar </a>
+								<br>
+							</div>
 						</form>
 						<p th:if="${mensaje}" th:text="${mensaje}"></p>
 					</div>
-					<div id="popup"
-						th:if="${mensajeExito != null or mensajeError != null}"
+					<div id="popup" th:if="${mensajeExito != null or mensajeError != null}"
 						style="display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000;">
 						<div
 							style="position: relative; top: 50%; transform: translateY(-50%); background: #fff; padding: 20px; border-radius: 5px; width: 80%; max-width: 400px; margin: 0 auto;">
 							<form th:action="@{/index}" method="get">
-								<h4
-									th:text="${mensajeExito != null ? mensajeExito : mensajeError}"></h4>
+								<h4 th:text="${mensajeExito != null ? mensajeExito : mensajeError}"></h4>
 								<button type="submit" class="btn btn-primary">Entendido</button>
 							</form>
 
@@ -157,17 +142,14 @@
 							<button id="cerrarPopupRegistro">Cerrar</button>
 						</div>
 					</div>
-					<!--<div class="col-md-8">
+					<div class="col-md-14">
 						<h3>Técnicos Registrados</h3>
-						<div
-							class="d-flex justify-content-end gap-2 position-absolute top-0 end-0 m-3">
-							<button type="button"
-								class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center"
-								data-bs-toggle="modal" data-bs-target="#filtroModal"
-								data-bs-backdrop="false" id="botonFiltrar">
-								<i class="bi bi-funnel"></i> Filtrars
-							</button>
+
+						<!-- Campo de búsqueda -->
+						<div class="d-flex mb-7">
+							<input type="text" id="searchInput" class="form-control" placeholder="Buscar Técnicos">
 						</div>
+						<!-- Tabla de Técnicos -->
 						<div id="tablaTécnicos">
 							<table class="table table-bordered">
 								<thead>
@@ -176,230 +158,108 @@
 										<th>Apellido Paterno</th>
 										<th>Apellido Materno</th>
 										<th>Correo Electrónico</th>
-										<th>Editar</th>
-										<th>Mas</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="tecnico : ${tecnicos}">
-										<td th:text="${tecnico.nombre}"></td>
-										<td th:text="${tecnico.apellidoPaterno}"></td>
-										<td th:text="${tecnico.apellidoMaterno}"></td>
-										<td th:text="${tecnico.email}"></td>
-										<td><a
-											th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}"
-											class="btn btn-primary"> <i class="bi bi-pencil-fill"></i>
-										</a></td>
-										<td><a
-											th:href="@{/getDetailInfo(idtecnico=${tecnico.idTecnico})}"
-											th:attr="data-nombreBanco=${infoDetail?.nombreBanco}, 
-            										 data-codigoActivacion=${infoDetail?.codigoActivacion}, 
-            										 data-codigoResumido=${infoDetail?.codigoResumido}"
-											class="boton" onclick="mostrarModal(this); return false;">
-												Ver Detalles </a></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>-->
-					<div class="col-md-8">
-					    <h3>Técnicos Registrados</h3>
-
-					    <!-- Campo de búsqueda -->
-					    <div class="d-flex mb-7">
-					        <input type="text" id="searchInput" class="form-control" placeholder="Buscar Técnicos">
-					    </div>
-						<br>
-					    <!-- Tabla de Técnicos -->
-					    <div id="tablaTécnicos">
-					        <table class="table table-bordered">
-					            <thead>
-					                <tr>
-					                    <th>Nombre</th>
-					                    <th>Apellido Paterno</th>
-					                    <th>Apellido Materno</th>
-					                    <th>Correo Electrónico</th>
 										<th>Estatus</th>
 										<th>Banco</th>
 										<th>Creador</th>
 										<th>Editor</th>
 										<th>Fecha De Actualizacion</th>
-					                    <th>Editar</th>
-					                </tr>
-					            </thead>
-					            <tbody id="tableBody">
-					                <tr th:each="tecnico : ${tecnicos}">
-					                    <td th:text="${tecnico.nombre}"></td>
-					                    <td th:text="${tecnico.apellidoPaterno}"></td>
-					                    <td th:text="${tecnico.apellidoMaterno}"></td>
-					                    <td th:text="${tecnico.email}"></td>
+										<th>Editar</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<tr th:each="tecnico : ${tecnicos}">
+										<td th:text="${tecnico.nombre}"></td>
+										<td th:text="${tecnico.apellidoPaterno}"></td>
+										<td th:text="${tecnico.apellidoMaterno}"></td>
+										<td th:text="${tecnico.email}"></td>
 										<td>
-										    <i class="bi bi-check-circle-fill text-success" th:if="${tecnico.activo}"></i>
-										    <i class="bi bi-dash-circle-fill text-danger" th:unless="${tecnico.activo}"></i>
+											<i class="bi bi-check-circle-fill text-success"
+												th:if="${tecnico.activo}"></i>
+											<i class="bi bi-dash-circle-fill text-danger"
+												th:unless="${tecnico.activo}"></i>
 										</td>
 										<td>
-											<span th:if="${tecnico.bancosTecnicos != null}" th:each="bancoTecnico : ${tecnico.bancosTecnicos}">
-											<span th:if="${bancoTecnico != null and bancoTecnico.bancos != null}" th:text="${bancoTecnico.bancos.nombre}"></span>
-										    </span>
-											<span th:if="${tecnico.bancosTecnicos == null || tecnico.bancosTecnicos.isEmpty()}">No asignado</span>
+											<span th:if="${tecnico.bancosTecnicos != null}"
+												th:each="bancoTecnico : ${tecnico.bancosTecnicos}">
+												<span th:if="${bancoTecnico != null and bancoTecnico.bancos != null}"
+													th:text="${bancoTecnico.bancos.nombre}"></span>
+											</span>
+											<span
+												th:if="${tecnico.bancosTecnicos == null || tecnico.bancosTecnicos.isEmpty()}">No
+												asignado</span>
 										</td>
 										<td th:text="${tecnico.usuarioCreacion?.nombreUsuario}"></td>
 										<td th:text="${tecnico.usuarioActualizacion?.nombreUsuario}"></td>
 										<td th:text="${tecnico.actualizacionTecnico}"></td>
-					                    <td>
-					                        <a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}" class="btn btn-primary">
-					                            <i class="bi bi-pencil-fill"></i>
-					                        </a>
-					                    </td>
-					                </tr>
-					            </tbody>
-					        </table>
-					    </div>
-					</div>
-					<div class="modal fade" id="filtroModal" tabindex="-1"
-						aria-labelledby="filtroModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="filtroModalLabel">Filtrar
-										Técnicos</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<form method="get" th:action="@{/filtrar-tecnico}">
-										<div class="mb-3">
-											<label for="nombre" class="form-label">Nombre</label> <input
-												type="text" class="form-control" id="nombre" name="nombre" 
-												style="width: 100%;">
-										</div>
-										<div class="mb-3">
-											<label for="correo" class="form-label">Correo</label> <input
-												type="email" class="form-control" id="email" name="email"
-												style="width: 100%;">
-										</div>
-										<button type="submit" class="btn btn-primary">Aplicar
-											Filtro</button>
-											<!-- Botón de reiniciar filtros -->
-											<button type="button" class="btn btn-secondary" id="reiniciarFiltros">
-											    <i class="bi bi-arrow-repeat"></i> Reiniciar Filtros
-											</button>
-
-									</form>
-								</div>
-							</div>
+										<td>
+											<a th:href="@{/editar-tecnico?id={id}(id=${tecnico.idTecnico})}"
+												class="btn btn-primary">
+												<i class="bi bi-pencil-fill"></i>
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
-
 				</div>
 			</div>
-			<div id="login" class="container tab-pane fade">
+			<div id="login" class="container tab-pane fade" style="text-align: center;">
 				<div class="row">
 					<h2>Registro De Técnicos Por Formato</h2>
-					<form th:action="@{/register-format}" method="post"
-						   enctype="multipart/form-data" class="register-format">
+					<form th:action="@{/register-format}" method="post" enctype="multipart/form-data"
+						class="register-format">
 						<h2>Subir Archivo .XLSX</h2>
-						<label for="file">Selecciona un archivo Excel:</label> <input
-						type="file" id="file" name="file" accept=".xlsx" required>
-						<button type="submit" class="btn btn-primary">Cargar
-						Técnicos</button>
-						<img th:src="@{/images/logoTPV.jpg}" alt="Imagen ilustrativa"
-						class="imagen-formulario">
+						<label for="file">Selecciona un archivo Excel:</label> <input type="file" id="file" name="file"
+							accept=".xlsx" required>
+						<button type="submit" class="btn btn-primary">Cargar Técnicos</button>
 					</form>
 				</div>
 			</div>
-			<!-- Modal -->
-			<div id="detalleModal" class="modal">
-				<div class="modal-content">
-					<span class="close" onclick="cerrarModal()">&times;</span>
-					<h2>Detalle del Técnico</h2>
-					<p>
-						<strong>Banco:</strong> <span id="nombreBanco"></span>
-					</p>
-					<p>
-						<strong>Código de Activación:</strong> <span id="codigoActivacion"></span>
-					</p>
-					<p>
-						<strong>Código Resumido:</strong> <span id="codigoResumido"></span>
-					</p>
-				</div>
-			</div>
-			
 		</div>
 	</div>
 
-	<!-- Estilos para el Modal -->
-	<style>
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-	background-color: white;
-	margin: 10% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 50%;
-	text-align: center;
-}
-
-.close {
-	color: red;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-	cursor: pointer;
-}
-</style>
-
 	<script>
-		function mostrarDetalles(link) {
-		        // Obtener el contenedor de detalles
-		        var detalles = link.nextElementSibling;
+			function mostrarDetalles(link) {
+				// Obtener el contenedor de detalles
+				var detalles = link.nextElementSibling;
 
-		        // Alternar la visibilidad del contenedor
-		        if (detalles.style.display === "none" || detalles.style.display === "") {
-		            detalles.style.display = "block";  // Mostrar
-		        } else {
-		            detalles.style.display = "none";  // Ocultar
-		        }
+				// Alternar la visibilidad del contenedor
+				if (detalles.style.display === "none" || detalles.style.display === "") {
+					detalles.style.display = "block";  // Mostrar
+				} else {
+					detalles.style.display = "none";  // Ocultar
+				}
 
-		        // Opcionalmente, si deseas que los otros detalles se oculten cuando se abra uno
-		        var allDetalles = document.querySelectorAll('.detalles');
-		        allDetalles.forEach(function (detalle) {
-		            if (detalle !== detalles) {
-		                detalle.style.display = "none"; // Ocultar los demás
-		            }
-		        });
-		    }
-	  document.getElementById("searchInput").addEventListener("input", function() {
-	      const searchValue = this.value.toLowerCase();
-	      const rows = document.querySelectorAll("#tableBody tr");
+				// Opcionalmente, si deseas que los otros detalles se oculten cuando se abra uno
+				var allDetalles = document.querySelectorAll('.detalles');
+				allDetalles.forEach(function (detalle) {
+					if (detalle !== detalles) {
+						detalle.style.display = "none"; // Ocultar los demás
+					}
+				});
+			}
+			document.getElementById("searchInput").addEventListener("input", function () {
+				const searchValue = this.value.toLowerCase();
+				const rows = document.querySelectorAll("#tableBody tr");
 
-	      rows.forEach(row => {
-	          const columns = row.querySelectorAll("td");
-	          const nombre = columns[0].textContent.toLowerCase();
-	          const apellidoPaterno = columns[1].textContent.toLowerCase();
-	          const apellidoMaterno = columns[2].textContent.toLowerCase();
-	          const email = columns[3].textContent.toLowerCase();
-			  const banco = columns[5].textContent.toLocaleLowerCase();
+				rows.forEach(row => {
+					const columns = row.querySelectorAll("td");
+					const nombre = columns[0].textContent.toLowerCase();
+					const apellidoPaterno = columns[1].textContent.toLowerCase();
+					const apellidoMaterno = columns[2].textContent.toLowerCase();
+					const email = columns[3].textContent.toLowerCase();
+					const banco = columns[5].textContent.toLocaleLowerCase();
 
-	          // Comprobar si alguno de los valores coincide con la búsqueda
-	          if (nombre.includes(searchValue) || apellidoPaterno.includes(searchValue) || apellidoMaterno.includes(searchValue) || email.includes(searchValue) ||banco.includes(searchValue)) {
-	              row.style.display = "";
-	          } else {
-	              row.style.display = "none";
-	          }
-	      });
-	  });
-</script>
-
+					// Comprobar si alguno de los valores coincide con la búsqueda
+					if (nombre.includes(searchValue) || apellidoPaterno.includes(searchValue) || apellidoMaterno.includes(searchValue) || email.includes(searchValue) || banco.includes(searchValue)) {
+						row.style.display = "";
+					} else {
+						row.style.display = "none";
+					}
+				});
+			});
+		</script>
 </body>
+
 </html>
